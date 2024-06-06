@@ -26,7 +26,7 @@ public static class DependencyInjection
     {
         services.AddMediatR(configuration =>
         {
-            configuration.RegisterServicesFromAssembly(assembly);
+            configuration.RegisterServicesFromAssemblies(CoreApplicationAssemblyMarker.Assembly, assembly);
         });
         
         services
@@ -39,6 +39,7 @@ public static class DependencyInjection
         this IServiceCollection services, 
         Assembly validatorsAssembly)
     {
-        return services.AddValidatorsFromAssembly(validatorsAssembly);
+        return services
+            .AddValidatorsFromAssemblies(new[] { CoreApplicationAssemblyMarker.Assembly, validatorsAssembly });
     }
 }

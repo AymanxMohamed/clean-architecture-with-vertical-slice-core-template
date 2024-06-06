@@ -6,12 +6,14 @@ using MapsterMapper;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using SampleProject.Application.Authentication.Commands.RegisterCommand;
 
-namespace SampleProject.Presentation.Controllers;
+namespace SampleProject.Presentation.FeatureName.Controllers;
 
+[Authorize]
 public class TestsController(ISender sender, IMapper mapper) : ApiController(sender, mapper)
 {
     [HttpGet]
