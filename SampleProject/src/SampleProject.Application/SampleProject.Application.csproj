@@ -5,10 +5,6 @@
     <ProjectReference Include="..\..\..\Common\Core\src\Core.Application\Core.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Authentication\Queries\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
