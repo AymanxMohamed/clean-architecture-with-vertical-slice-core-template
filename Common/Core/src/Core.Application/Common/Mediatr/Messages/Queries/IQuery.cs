@@ -1,8 +1,6 @@
-﻿using ErrorOr;
+﻿using MediatR;
 
-using MediatR;
-
-namespace Core.Application.Mediatr.Messages.Queries;
+namespace Core.Application.Common.Mediatr.Messages.Queries;
 
 public interface IQuery<TResponse> : IRequest<ErrorOr<TResponse>>;
 

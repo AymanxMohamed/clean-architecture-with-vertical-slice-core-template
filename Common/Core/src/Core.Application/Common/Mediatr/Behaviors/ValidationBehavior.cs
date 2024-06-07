@@ -1,10 +1,8 @@
-﻿using ErrorOr;
-
-using FluentValidation;
+﻿using FluentValidation;
 
 using MediatR;
 
-namespace Core.Application.Mediatr.Behaviors;
+namespace Core.Application.Common.Mediatr.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null) :
     IPipelineBehavior<TRequest, TResponse>

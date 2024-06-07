@@ -1,5 +1,5 @@
 ﻿using Core.Application.Authentication.Common;
-using Core.Application.Mediatr.Messages.Commands;
+using Core.Application.Common.Mediatr.Messages.Commands;
 
 namespace Core.Application.Authentication.Commands.Register;
 

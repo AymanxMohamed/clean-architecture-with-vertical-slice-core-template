@@ -1,6 +1,0 @@
-@SampleProject.Presentation.Api_HostAddress = http://localhost:5107
-
-GET {{SampleProject.Presentation.Api_HostAddress}}/Tests/
-Accept: application/json
-
-###

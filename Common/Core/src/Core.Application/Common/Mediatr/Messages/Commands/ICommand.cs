@@ -1,8 +1,6 @@
-﻿using ErrorOr;
+﻿using MediatR;
 
-using MediatR;
-
-namespace Core.Application.Mediatr.Messages.Commands;
+namespace Core.Application.Common.Mediatr.Messages.Commands;
 
 public interface ICommand : IRequest<ErrorOr<Success>>;
 

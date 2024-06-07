@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-using Core.Application.Mediatr.Behaviors;
+using Core.Application.Common.Mediatr.Behaviors;
 
 using FluentValidation;
 

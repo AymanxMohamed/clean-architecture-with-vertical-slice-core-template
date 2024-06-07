@@ -1,5 +1,5 @@
 ﻿using Core.Application.Authentication.Common;
-using Core.Application.Mediatr.Messages.Queries;
+using Core.Application.Common.Mediatr.Messages.Queries;
 
 namespace Core.Application.Authentication.Queries.Login;
 
