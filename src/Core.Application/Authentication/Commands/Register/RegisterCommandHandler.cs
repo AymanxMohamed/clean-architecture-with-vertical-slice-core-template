@@ -4,7 +4,7 @@ using Core.Application.Common.Mediatr.Messages.Commands;
 using Core.Application.Common.Users;
 using Core.Domain.Aggregates.UserAggregate;
 using Core.Domain.Common.Errors;
-using Core.Domain.Services;
+using Core.Domain.Common.Services;
 
 namespace Core.Application.Authentication.Commands.Register;
 

@@ -1,8 +1,8 @@
 ﻿// ReSharper disable ConvertToPrimaryConstructor
 // ReSharper disable MemberCanBePrivate.Global
 using Core.Application.Common.Persistence;
+using Core.Domain.Common.Models;
 using Core.Domain.Common.Persistence.Models;
-using Core.Domain.Models;
 
 using Microsoft.EntityFrameworkCore;
 

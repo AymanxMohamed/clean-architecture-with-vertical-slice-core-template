@@ -8,9 +8,6 @@ using Core.Infrastructure.Persistence.Common.Services;
 using Core.Infrastructure.Persistence.Common.Settings;
 using Core.Infrastructure.Persistence.Users.Repositories;
 
-using MediatR;
-
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,7 +22,7 @@ public static class DependencyInjection
     {
         return services
             .AddDbContextFromDbConfigurations(configuration, efCoreConfigurationsAssembly)
-            .AddGenericRepository()
+            .AddGenericRepositoryWithSpecification()
             .AddUsers();
     }
     
@@ -48,7 +45,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddGenericRepository(this IServiceCollection services)
+    private static IServiceCollection AddGenericRepositoryWithSpecification(this IServiceCollection services)
     {
         services.AddTransient(
             serviceType: typeof(ISpecificationEvaluator<,>),  

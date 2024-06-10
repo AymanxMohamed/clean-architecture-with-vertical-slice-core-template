@@ -1,6 +1,4 @@
-﻿using ErrorOr;
-
-namespace Core.Domain.Services;
+﻿namespace Core.Domain.Common.Services;
 
 public interface IPasswordHasher
 {

@@ -1,4 +1,4 @@
-﻿using Core.Domain.Models;
+﻿using Core.Domain.Common.Models;
 
 namespace Core.Domain.Common.Persistence.Models;
 

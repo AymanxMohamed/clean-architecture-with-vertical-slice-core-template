@@ -4,7 +4,7 @@ using System.Text;
 
 using Core.Application.Authentication.Interfaces;
 using Core.Domain.Aggregates.UserAggregate;
-using Core.Domain.Services;
+using Core.Domain.Common.Services;
 
 using Microsoft.IdentityModel.Tokens;
 

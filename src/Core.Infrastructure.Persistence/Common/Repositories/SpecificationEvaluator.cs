@@ -1,5 +1,5 @@
 ﻿using Core.Application.Common.Persistence;
-using Core.Domain.Models;
+using Core.Domain.Common.Models;
 
 using Microsoft.EntityFrameworkCore;
 

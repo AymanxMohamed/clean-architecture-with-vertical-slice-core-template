@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 
 using Core.Domain.Common.Errors;
-using Core.Domain.Services;
+using Core.Domain.Common.Services;
 
 using ErrorOr;
 

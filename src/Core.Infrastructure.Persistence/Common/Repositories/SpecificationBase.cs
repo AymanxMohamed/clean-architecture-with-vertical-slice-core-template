@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 
 using Core.Application.Common.Persistence;
+using Core.Domain.Common.Models;
 using Core.Domain.Common.Persistence.Models;
-using Core.Domain.Models;
 
 namespace Core.Infrastructure.Persistence.Common.Repositories;
 

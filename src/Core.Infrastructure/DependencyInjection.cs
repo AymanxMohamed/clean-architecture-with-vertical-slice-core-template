@@ -1,7 +1,7 @@
 ﻿using System.Text;
 
 using Core.Application.Authentication.Interfaces;
-using Core.Domain.Services;
+using Core.Domain.Common.Services;
 using Core.Infrastructure.Authentication;
 using Core.Infrastructure.Authentication.PasswordHasher;
 using Core.Infrastructure.Authentication.TokenGenerator;

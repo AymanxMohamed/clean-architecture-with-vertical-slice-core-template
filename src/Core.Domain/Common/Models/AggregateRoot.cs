@@ -1,6 +1,6 @@
 ﻿using Core.Domain.Common.Interfaces;
 
-namespace Core.Domain.Models;
+namespace Core.Domain.Common.Models;
 
 public abstract class AggregateRoot<TId, TIdType> : Entity<TId>
     where TId : AggregateRootId<TIdType>

@@ -1,6 +1,6 @@
 ﻿using Core.Domain.Aggregates.UserAggregate.ValueObjects;
-using Core.Domain.Models;
-using Core.Domain.Services;
+using Core.Domain.Common.Models;
+using Core.Domain.Common.Services;
 
 namespace Core.Domain.Aggregates.UserAggregate;
 

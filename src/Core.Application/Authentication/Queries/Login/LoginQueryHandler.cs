@@ -3,7 +3,7 @@ using Core.Application.Authentication.Interfaces;
 using Core.Application.Common.Mediatr.Messages.Queries;
 using Core.Application.Common.Users;
 using Core.Domain.Common.Errors;
-using Core.Domain.Services;
+using Core.Domain.Common.Services;
 
 namespace Core.Application.Authentication.Queries.Login;
 

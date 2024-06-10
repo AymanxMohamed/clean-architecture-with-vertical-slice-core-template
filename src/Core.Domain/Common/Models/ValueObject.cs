@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Models;
+﻿namespace Core.Domain.Common.Models;
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {

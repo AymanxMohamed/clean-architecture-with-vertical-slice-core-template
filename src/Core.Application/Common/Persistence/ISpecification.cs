@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 
+using Core.Domain.Common.Models;
 using Core.Domain.Common.Persistence.Models;
-using Core.Domain.Models;
 
 namespace Core.Application.Common.Persistence;
 

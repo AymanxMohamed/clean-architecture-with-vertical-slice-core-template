@@ -1,4 +1,4 @@
-﻿using Core.Domain.Services;
+﻿using Core.Domain.Common.Services;
 
 namespace Core.Infrastructure.Services;
 

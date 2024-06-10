@@ -1,5 +1,5 @@
-﻿using Core.Domain.Common.Persistence.Models;
-using Core.Domain.Models;
+﻿using Core.Domain.Common.Models;
+using Core.Domain.Common.Persistence.Models;
 
 namespace Core.Application.Common.Persistence;
 
