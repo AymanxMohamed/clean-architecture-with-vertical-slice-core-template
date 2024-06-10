@@ -15,8 +15,8 @@ public interface IGenericRepository<TEntity, TEntityId>
     Task<TEntity?> GetFirstOrDefault(ISpecification<TEntity> specification);
     Task<TEntity?> GetFirstOrDefaultReadyOnly(ISpecification<TEntity> specification);
     Task<bool> CheckExistAsync(ISpecification<TEntity> specification);
-    Task<bool> CheckExistByIdAsync(Guid id);
-    Task<TEntity?> GetByIdAsync(Guid id);
+    Task<bool> CheckExistByIdAsync(TEntityId id);
+    Task<TEntity?> GetByIdAsync(TEntityId id);
     Task<List<TEntity>> ListAllAsync();
     Task<TEntity> AddAsync(TEntity entity);
     void Update(TEntity entity);
