@@ -1,4 +1,6 @@
-﻿using Core.Application.Common.Persistence;
+﻿// ReSharper disable ConvertToPrimaryConstructor
+// ReSharper disable MemberCanBePrivate.Global
+using Core.Application.Common.Persistence;
 using Core.Domain.Common.Persistence.Models;
 using Core.Domain.Models;
 
