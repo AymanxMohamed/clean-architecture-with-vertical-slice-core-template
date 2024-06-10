@@ -51,10 +51,6 @@ public static class DependencyInjection
             serviceType: typeof(IGenericRepository<,>),  
             implementationType: typeof(GenericRepository<,>));
 
-        services.AddTransient(
-            serviceType: typeof(ISpecification<,>),  
-            implementationType: typeof(SpecificationBase<,>));
-        
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         
         return services;

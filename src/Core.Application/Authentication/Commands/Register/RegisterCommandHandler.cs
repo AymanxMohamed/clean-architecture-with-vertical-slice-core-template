@@ -1,8 +1,10 @@
 ﻿using Core.Application.Authentication.Dtos;
 using Core.Application.Authentication.Interfaces;
+using Core.Application.Authentication.Specifications;
 using Core.Application.Common.Mediatr.Messages.Commands;
-using Core.Application.Common.Users;
+using Core.Application.Common.Persistence;
 using Core.Domain.Aggregates.UserAggregate;
+using Core.Domain.Aggregates.UserAggregate.ValueObjects;
 using Core.Domain.Common.Errors;
 using Core.Domain.Common.Services;
 
@@ -11,12 +13,11 @@ namespace Core.Application.Authentication.Commands.Register;
 public class RegisterCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator, 
     IPasswordHasher passwordHasher, 
-    IUsersCommandRepository usersCommandRepository,
-    IUsersQueryRepository usersQueryRepository) : ICommandHandler<RegisterCommand, AuthenticationResult>
+    IGenericRepository<User, UserId> userGenericRepository) : ICommandHandler<RegisterCommand, AuthenticationResult>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        if (await usersQueryRepository.ExistsByEmailAsync(command.Email))
+        if (await userGenericRepository.CheckExistAsync(new UserByEmailSpecification(command.Email)))
         {
             return Errors.User.GenerateDuplicateEmailError(command.Email);
         }
@@ -34,7 +35,7 @@ public class RegisterCommandHandler(
             command.Email,
             hashPasswordResult.Value);
         
-        await usersCommandRepository.CreateAsync(user);
+        await userGenericRepository.AddAsync(user);
 
         var token = jwtTokenGenerator.GenerateToken(user);
 

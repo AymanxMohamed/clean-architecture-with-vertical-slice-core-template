@@ -1,12 +1,11 @@
 ﻿using System.Linq.Expressions;
 
-using Core.Application.Common.Persistence;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Persistence.Models;
 
-namespace Core.Infrastructure.Persistence.Common.Repositories;
+namespace Core.Application.Common.Persistence;
 
-public class SpecificationBase<TEntity, TEntityId> : ISpecification<TEntity, TEntityId>
+public abstract class SpecificationBase<TEntity, TEntityId> : ISpecification<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
     where TEntityId : notnull
 {
