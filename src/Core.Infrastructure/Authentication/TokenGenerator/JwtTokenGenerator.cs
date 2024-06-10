@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 
-using Core.Application.Common.Authentication;
+using Core.Application.Authentication.Interfaces;
 using Core.Domain.Aggregates.UserAggregate;
 using Core.Domain.Services;
 

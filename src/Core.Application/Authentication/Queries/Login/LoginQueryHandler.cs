@@ -1,5 +1,5 @@
-﻿using Core.Application.Authentication.Common;
-using Core.Application.Common.Authentication;
+﻿using Core.Application.Authentication.Dtos;
+using Core.Application.Authentication.Interfaces;
 using Core.Application.Common.Mediatr.Messages.Queries;
 using Core.Application.Common.Users;
 using Core.Domain.Common.Errors;

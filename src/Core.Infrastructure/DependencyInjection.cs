@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-using Core.Application.Common.Authentication;
+using Core.Application.Authentication.Interfaces;
 using Core.Domain.Services;
 using Core.Infrastructure.Authentication;
 using Core.Infrastructure.Authentication.PasswordHasher;

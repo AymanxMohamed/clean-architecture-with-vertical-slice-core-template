@@ -1,5 +1,5 @@
 ﻿using Core.Application.Authentication.Commands.Register;
-using Core.Application.Authentication.Common;
+using Core.Application.Authentication.Dtos;
 using Core.Application.Authentication.Queries.Login;
 using Core.Domain.Common.Errors;
 using Core.Presentation.Authentication.Dtos;

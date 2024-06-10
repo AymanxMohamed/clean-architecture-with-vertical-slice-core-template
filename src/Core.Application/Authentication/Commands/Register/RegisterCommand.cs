@@ -1,4 +1,4 @@
-﻿using Core.Application.Authentication.Common;
+﻿using Core.Application.Authentication.Dtos;
 using Core.Application.Common.Mediatr.Messages.Commands;
 
 namespace Core.Application.Authentication.Commands.Register;

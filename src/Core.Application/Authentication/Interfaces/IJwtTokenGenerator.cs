@@ -1,6 +1,6 @@
 ﻿using Core.Domain.Aggregates.UserAggregate;
 
-namespace Core.Application.Common.Authentication;
+namespace Core.Application.Authentication.Interfaces;
 
 public interface IJwtTokenGenerator
 {
