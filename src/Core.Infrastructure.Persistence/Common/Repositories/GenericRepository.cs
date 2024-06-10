@@ -33,7 +33,7 @@ public class GenericRepository<TEntity, TEntityId> : IGenericRepository<TEntity,
         return await _dbContext.Set<TEntity>().CountAsync();
     }
 
-    public async Task<int> CountAsync(ISpecification<TEntity> specification, bool countAllExcludingPagination = false)
+    public async Task<int> CountAsync(ISpecification<TEntity, TEntityId> specification, bool countAllExcludingPagination = false)
     {
         if (countAllExcludingPagination)
         {
@@ -43,35 +43,35 @@ public class GenericRepository<TEntity, TEntityId> : IGenericRepository<TEntity,
         return await ApplySpecification(specification).CountAsync();
     }
 
-    public async Task<List<TEntity>> GetAsync(ISpecification<TEntity> specification)
+    public async Task<List<TEntity>> GetAsync(ISpecification<TEntity, TEntityId> specification)
     {
         var items = await ApplySpecification(specification).ToListAsync();
         return items;
     }
 
-    public async Task<List<TEntity>> GetReadyOnlyAsync(ISpecification<TEntity> specification)
+    public async Task<List<TEntity>> GetReadyOnlyAsync(ISpecification<TEntity, TEntityId> specification)
     {
         var items = await ApplySpecificationReadOnly(specification).ToListAsync();
         return items;
     }
 
-    public async Task<PaginationResult<TEntity, TEntityId>> GetPaginationAsync(ISpecification<TEntity> specification)
+    public async Task<PaginationResult<TEntity, TEntityId>> GetPaginationAsync(ISpecification<TEntity, TEntityId> specification)
     {
         var items = await ApplySpecificationReadOnly(specification).ToListAsync();
         return new PaginationResult<TEntity, TEntityId>(items, await CountAsync(specification, countAllExcludingPagination: true), specification.ResourceParameter); 
     }
 
-    public async Task<TEntity?> GetFirstOrDefault(ISpecification<TEntity> specification) 
+    public async Task<TEntity?> GetFirstOrDefault(ISpecification<TEntity, TEntityId> specification) 
     {
         return await ApplySpecification(specification).FirstOrDefaultAsync();
     }
 
-    public async Task<TEntity?> GetFirstOrDefaultReadyOnly(ISpecification<TEntity> specification)
+    public async Task<TEntity?> GetFirstOrDefaultReadyOnly(ISpecification<TEntity, TEntityId> specification)
     {
         return await ApplySpecificationReadOnly(specification).FirstOrDefaultAsync();
     }
 
-    public async Task<bool> CheckExistAsync(ISpecification<TEntity> specification)
+    public async Task<bool> CheckExistAsync(ISpecification<TEntity, TEntityId> specification)
     {
         return await ApplySpecification(specification).AnyAsync();
     }
@@ -112,12 +112,12 @@ public class GenericRepository<TEntity, TEntityId> : IGenericRepository<TEntity,
         _dbContext.Set<TEntity>().RemoveRange(_dbContext.Set<TEntity>().Where(predicate));
     }
 
-    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
+    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity, TEntityId> spec)
     {
         return SpecificationEvaluator<TEntity, TEntityId>.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec);
     }
 
-    private IQueryable<TEntity> ApplySpecificationReadOnly(ISpecification<TEntity> spec)
+    private IQueryable<TEntity> ApplySpecificationReadOnly(ISpecification<TEntity, TEntityId> spec)
     {
         return SpecificationEvaluator<TEntity, TEntityId>.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec).AsNoTracking();
     }

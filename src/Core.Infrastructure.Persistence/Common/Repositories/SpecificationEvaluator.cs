@@ -9,7 +9,9 @@ public abstract class SpecificationEvaluator<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
     where TEntityId : notnull
 {
-    public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
+    public static IQueryable<TEntity> GetQuery(
+        IQueryable<TEntity> inputQuery, 
+        ISpecification<TEntity, TEntityId> specification)
     {
         var query = inputQuery;
 
@@ -24,7 +26,9 @@ public abstract class SpecificationEvaluator<TEntity, TEntityId>
         return query;
     }
 
-    private static IQueryable<TEntity> ApplyCriteria(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private static IQueryable<TEntity> ApplyCriteria(
+        IQueryable<TEntity> query, 
+        ISpecification<TEntity, TEntityId> specification)
     {
         if (specification.Criteria is not null)
         {
@@ -34,14 +38,22 @@ public abstract class SpecificationEvaluator<TEntity, TEntityId>
         return query;
     }
 
-    private static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private static IQueryable<TEntity> ApplyIncludes(
+        IQueryable<TEntity> query, 
+        ISpecification<TEntity, TEntityId> specification)
     {
-        query = specification.Includes.Aggregate(query, (current, include) => current.Include(include));
-        query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+        query = specification.Includes
+            .Aggregate(query, (current, include) => current.Include(include));
+        
+        query = specification.IncludeStrings.
+            Aggregate(query, (current, include) => current.Include(include));
+        
         return query;
     }
 
-    private static IQueryable<TEntity> ApplyOrdering(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private static IQueryable<TEntity> ApplyOrdering(
+        IQueryable<TEntity> query, 
+        ISpecification<TEntity, TEntityId> specification)
     {
         if (specification.OrderBy != null)
         {
@@ -55,7 +67,7 @@ public abstract class SpecificationEvaluator<TEntity, TEntityId>
         return query;
     }
 
-    private static IQueryable<TEntity> ApplyGrouping(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private static IQueryable<TEntity> ApplyGrouping(IQueryable<TEntity> query, ISpecification<TEntity, TEntityId> specification)
     {
         if (specification.GroupBy != null)
         {
@@ -65,7 +77,9 @@ public abstract class SpecificationEvaluator<TEntity, TEntityId>
         return query;
     }
 
-    private static IQueryable<TEntity> ApplySelection(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private static IQueryable<TEntity> ApplySelection(
+        IQueryable<TEntity> query, 
+        ISpecification<TEntity, TEntityId> specification)
     {
         if (specification.Selector != null)
         {
@@ -75,7 +89,9 @@ public abstract class SpecificationEvaluator<TEntity, TEntityId>
         return query;
     }
 
-    private static IQueryable<TEntity> ApplyCustomOrdering(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private static IQueryable<TEntity> ApplyCustomOrdering(
+        IQueryable<TEntity> query, 
+        ISpecification<TEntity, TEntityId> specification)
     {
         if (specification.OrderByQueryable != null)
         {
@@ -85,7 +101,9 @@ public abstract class SpecificationEvaluator<TEntity, TEntityId>
         return query;
     }
 
-    private static IQueryable<TEntity> ApplyPaging(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private static IQueryable<TEntity> ApplyPaging(
+        IQueryable<TEntity> query, 
+        ISpecification<TEntity, TEntityId> specification)
     {
         if (specification.IsPagingEnabled)
         {
