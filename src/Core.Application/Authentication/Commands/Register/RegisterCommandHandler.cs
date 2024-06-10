@@ -33,7 +33,7 @@ public class RegisterCommandHandler(
             command.LastName,
             command.Email,
             hashPasswordResult.Value);
-
+        
         await usersCommandRepository.CreateAsync(user);
 
         var token = jwtTokenGenerator.GenerateToken(user);

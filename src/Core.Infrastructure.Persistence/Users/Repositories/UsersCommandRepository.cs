@@ -10,12 +10,10 @@ public class UsersCommandRepository(ApplicationDbContext dbContext) : IUsersComm
     public async Task CreateAsync(User user)
     {
         await dbContext.AddAsync(user);
-        await dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(User user)
+    public void UpdateAsync(User user)
     {
         dbContext.Update(user);
-        await dbContext.SaveChangesAsync();
     }
 }

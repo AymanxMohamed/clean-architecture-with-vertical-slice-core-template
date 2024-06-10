@@ -3,5 +3,6 @@
 public interface IAuditableEntity
 {
     public DateTime CreatedOnUtc { get; }
+
     public DateTime ModifiedOnUtc { get; }
 }

@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssemblies(CoreApplicationAssemblyMarker.Assembly, assembly);
+            configuration.AddOpenBehavior(typeof(UnitOfWorkBehaviour<,>));
         });
         
         services

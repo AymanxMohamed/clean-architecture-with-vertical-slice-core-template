@@ -6,5 +6,5 @@ public interface IUsersCommandRepository
 {
     Task CreateAsync(User user);
     
-    Task UpdateAsync(User user);
+    void UpdateAsync(User user);
 }

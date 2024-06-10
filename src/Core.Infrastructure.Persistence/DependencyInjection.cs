@@ -48,10 +48,6 @@ public static class DependencyInjection
     private static IServiceCollection AddGenericRepositoryWithSpecification(this IServiceCollection services)
     {
         services.AddTransient(
-            serviceType: typeof(ISpecificationEvaluator<,>),  
-            implementationType: typeof(SpecificationEvaluator<,>));
-        
-        services.AddTransient(
             serviceType: typeof(IGenericRepository<,>),  
             implementationType: typeof(GenericRepository<,>));
 

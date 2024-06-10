@@ -15,5 +15,6 @@ public class AuditableEntity<TEntityId> : Entity<TEntityId>, IAuditableEntity
     }
 
     public DateTime CreatedOnUtc { get; private set; }
+    
     public DateTime ModifiedOnUtc { get; private set; }
 }

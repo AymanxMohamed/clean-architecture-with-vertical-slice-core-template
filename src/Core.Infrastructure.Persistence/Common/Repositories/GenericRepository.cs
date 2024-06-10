@@ -13,14 +13,10 @@ public class GenericRepository<TEntity, TEntityId> : IGenericRepository<TEntity,
     where TEntityId : notnull
 {
     protected readonly ApplicationDbContext _dbContext;
-    private readonly ISpecificationEvaluator<TEntity, TEntityId> _specificationEvaluator;
 
-    public GenericRepository(
-        ApplicationDbContext dbContext, 
-        ISpecificationEvaluator<TEntity, TEntityId> specificationEvaluator)
+    public GenericRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
-        _specificationEvaluator = specificationEvaluator;
     }
 
     public IQueryable<TEntity> GetEntryReadOnly()
@@ -128,11 +124,11 @@ public class GenericRepository<TEntity, TEntityId> : IGenericRepository<TEntity,
 
     private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity, TEntityId> spec)
     {
-        return _specificationEvaluator.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec);
+        return SpecificationEvaluator<TEntity, TEntityId>.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec);
     }
 
     private IQueryable<TEntity> ApplySpecificationReadOnly(ISpecification<TEntity, TEntityId> spec)
     {
-        return _specificationEvaluator.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec).AsNoTracking();
+        return SpecificationEvaluator<TEntity, TEntityId>.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec).AsNoTracking();
     }
 }
