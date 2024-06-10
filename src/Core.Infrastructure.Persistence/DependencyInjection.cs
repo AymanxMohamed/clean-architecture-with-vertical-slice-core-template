@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 
 using Core.Application.Common.Persistence;
-using Core.Application.Common.Users;
 using Core.Infrastructure.Persistence.Common.Extensions;
 using Core.Infrastructure.Persistence.Common.Repositories;
 using Core.Infrastructure.Persistence.Common.Services;
 using Core.Infrastructure.Persistence.Common.Settings;
-using Core.Infrastructure.Persistence.Users.Repositories;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +20,7 @@ public static class DependencyInjection
     {
         return services
             .AddDbContextFromDbConfigurations(configuration, efCoreConfigurationsAssembly)
-            .AddGenericRepositoryWithSpecification()
-            .AddUsers();
+            .AddGenericRepositoryWithSpecification();
     }
     
     private static IServiceCollection AddDbContextFromDbConfigurations(
@@ -53,13 +50,6 @@ public static class DependencyInjection
 
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         
-        return services;
-    }
-
-    private static IServiceCollection AddUsers(this IServiceCollection services)
-    {
-        services.AddTransient<IUsersCommandRepository, UsersCommandRepository>();
-        services.AddTransient<IUsersQueryRepository, UsersQueryRepository>();
         return services;
     }
 }
