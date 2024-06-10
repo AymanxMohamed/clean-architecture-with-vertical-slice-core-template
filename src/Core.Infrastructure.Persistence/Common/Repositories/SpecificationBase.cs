@@ -20,8 +20,8 @@ public class SpecificationBase<TEntity, TEntityId> : ISpecification<TEntity, TEn
     }
     
     public Expression<Func<TEntity, bool>> Criteria { get; } = null!;
-    public List<Expression<Func<TEntity, object>>> Includes { get; } = new List<Expression<Func<TEntity, object>>>();
-    public List<string> IncludeStrings { get; } = new List<string>();
+    public List<Expression<Func<TEntity, object>>> Includes { get; } = [];
+    public List<string> IncludeStrings { get; } = [];
     public Expression<Func<TEntity, object>> OrderBy { get; private set; } = null!;
     public Expression<Func<TEntity, object>> OrderByDescending { get; private set; } = null!;
     public Expression<Func<TEntity, object>> GroupBy { get; private set; } = null!;
@@ -59,7 +59,7 @@ public class SpecificationBase<TEntity, TEntityId> : ISpecification<TEntity, TEn
         OrderBy = orderByExpression;
     }
     
-    protected virtual void ApplyOrderByQuerable(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> order)
+    protected virtual void ApplyOrderByQueryable(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> order)
     {
         OrderByQueryable = order;
     }
