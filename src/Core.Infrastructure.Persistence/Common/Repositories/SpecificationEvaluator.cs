@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Persistence.Common.Repositories;
 
-public abstract class SpecificationEvaluator<TEntity, TEntityId> 
+public abstract class SpecificationEvaluator<TEntity, TEntityId> : ISpecificationEvaluator<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
     where TEntityId : notnull
 {
-    public static IQueryable<TEntity> GetQuery(
+    public IQueryable<TEntity> GetQuery(
         IQueryable<TEntity> inputQuery, 
         ISpecification<TEntity, TEntityId> specification)
     {
