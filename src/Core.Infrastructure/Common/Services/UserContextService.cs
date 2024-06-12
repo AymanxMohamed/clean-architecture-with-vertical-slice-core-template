@@ -18,10 +18,10 @@ public class UserContextService(IHttpContextAccessor httpContextAccessor) : IUse
         var userClaims = httpContextAccessor.HttpContext?.User;
 
         return UserContext.Create(
-            userId: userClaims?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, 
-            firstName: userClaims?.FindFirst(JwtRegisteredClaimNames.GivenName)?.Value, 
-            lastName: userClaims?.FindFirst(JwtRegisteredClaimNames.FamilyName)?.Value, 
-            email: userClaims?.FindFirst(JwtRegisteredClaimNames.Email)?.Value, 
+            userId: userClaims?.FindFirst(ClaimTypes.NameIdentifier)?.Value, 
+            firstName: userClaims?.FindFirst(ClaimTypes.GivenName)?.Value, 
+            lastName: userClaims?.FindFirst(ClaimTypes.Surname)?.Value, 
+            email: userClaims?.FindFirst(ClaimTypes.Email)?.Value, 
             jti: userClaims?.FindFirst(JwtRegisteredClaimNames.Jti)?.Value);
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System.Text;
 
 using Core.Application.Authentication.Interfaces;
+using Core.Application.Common.Contexts;
 using Core.Domain.Common.Services;
 using Core.Infrastructure.Authentication;
 using Core.Infrastructure.Authentication.PasswordHasher;
 using Core.Infrastructure.Authentication.TokenGenerator;
+using Core.Infrastructure.Common.Services;
 using Core.Infrastructure.Services;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,7 +23,8 @@ public static class DependencyInjection
     {
         return services
             .AddCommonServices()
-            .AddAuth(configuration);
+            .AddAuth(configuration)
+            .AddUserContext();
     }
 
     private static IServiceCollection AddCommonServices(this IServiceCollection services)
@@ -50,5 +53,10 @@ public static class DependencyInjection
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
             });
         return services;
+    }
+
+    private static IServiceCollection AddUserContext(this IServiceCollection services)
+    {
+        return services.AddTransient<IUserContextService, UserContextService>();
     }
 }

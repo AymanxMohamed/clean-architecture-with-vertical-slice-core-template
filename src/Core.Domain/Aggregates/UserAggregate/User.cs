@@ -4,7 +4,7 @@ using Core.Domain.Common.Services;
 
 namespace Core.Domain.Aggregates.UserAggregate;
 
-public class User : Entity<UserId>
+public class User : AuditableEntity<UserId>
 {
     private readonly string _passwordHash = null!;
     

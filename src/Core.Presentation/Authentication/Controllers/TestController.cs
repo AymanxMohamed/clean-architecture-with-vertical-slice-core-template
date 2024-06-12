@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Core.Presentation.Authentication.Controllers;
 
 [Authorize]
-public class TestController(ISender sender, IMapper mapper, IUserContextService userContextService) : ApiController(sender, mapper)
+public class TestController(ISender sender, IMapper mapper, IUserContextService userContextService) 
+    : ApiController(sender, mapper)
 {
+    [HttpGet]
     public IActionResult Test()
     {
         var result = userContextService.GetUserContext();
