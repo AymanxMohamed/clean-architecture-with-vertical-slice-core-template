@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Core.Infrastructure.Persistence.Migrations.SqlServer
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240605095036_InitialMigrations")]
+    [Migration("20240612153959_InitialMigrations")]
     partial class InitialMigrations
     {
         /// <inheritdoc />
@@ -30,6 +30,12 @@ namespace Core.Infrastructure.Persistence.Migrations.SqlServer
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -44,6 +50,12 @@ namespace Core.Infrastructure.Persistence.Migrations.SqlServer
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid?>("ModifiedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedOnUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("_passwordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -51,7 +63,26 @@ namespace Core.Infrastructure.Persistence.Migrations.SqlServer
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Core.Domain.Aggregates.UserAggregate.User", b =>
+                {
+                    b.HasOne("Core.Domain.Aggregates.UserAggregate.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Core.Domain.Aggregates.UserAggregate.User", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
                 });
 #pragma warning restore 612, 618
         }

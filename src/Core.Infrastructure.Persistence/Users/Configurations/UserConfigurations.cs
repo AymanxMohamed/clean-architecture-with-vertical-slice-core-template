@@ -1,5 +1,6 @@
 ﻿using Core.Domain.Aggregates.UserAggregate;
 using Core.Domain.Aggregates.UserAggregate.ValueObjects;
+using Core.Domain.Common.Models;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -31,5 +32,15 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(u => u.Email);
         
         builder.Property("_passwordHash").HasColumnName("PasswordHash");
+
+        builder
+            .HasMany<User>()
+            .WithOne(x => x.CreatedBy)
+            .HasForeignKey(x => x.CreatedById);
+        
+        builder
+            .HasMany<User>()
+            .WithOne(x => x.ModifiedBy)
+            .HasForeignKey(x => x.ModifiedById);
     }
 }

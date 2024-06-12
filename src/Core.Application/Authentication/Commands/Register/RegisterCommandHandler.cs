@@ -14,8 +14,7 @@ namespace Core.Application.Authentication.Commands.Register;
 public class RegisterCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator, 
     IPasswordHasher passwordHasher, 
-    IGenericRepository<User, UserId> userGenericRepository,
-    IUserContextService userContextService) : ICommandHandler<RegisterCommand, AuthenticationResult>
+    IGenericRepository<User, UserId> userGenericRepository) : ICommandHandler<RegisterCommand, AuthenticationResult>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
@@ -41,8 +40,6 @@ public class RegisterCommandHandler(
 
         var token = jwtTokenGenerator.GenerateToken(user);
 
-        var userContext = userContextService.GetUserContext();
-        
         return new AuthenticationResult(user, token);
     }
 }
