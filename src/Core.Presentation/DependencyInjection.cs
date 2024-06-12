@@ -20,7 +20,8 @@ public static class DependencyInjection
     {
         services
             .AddControllers(controllersAssembly)
-            .AddMappings(mappingAssembly ?? controllersAssembly);
+            .AddMappings(mappingAssembly ?? controllersAssembly)
+            .AddHttpContextAccessor();
         
         return services;
     }
