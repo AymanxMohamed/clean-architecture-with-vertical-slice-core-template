@@ -26,6 +26,7 @@ public class AuthenticationController(ISender sender, IMapper mapper) : ApiContr
     public async Task<IActionResult> Register(RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
+        
         ErrorOr<AuthenticationResult> authResult = await _sender.Send(command);
 
         return authResult.Match(

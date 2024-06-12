@@ -1,7 +1,6 @@
 ﻿using Core.Application.Authentication.Dtos;
 using Core.Application.Authentication.Interfaces;
 using Core.Application.Authentication.Specifications;
-using Core.Application.Common.Contexts;
 using Core.Application.Common.Mediatr.Messages.Commands;
 using Core.Application.Common.Persistence;
 using Core.Domain.Aggregates.UserAggregate;
