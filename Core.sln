@@ -5,39 +5,38 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A3787837-5B9F-4C97-A5EA-E66F18D72665}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Application", "src\Core.Application\Core.Application.csproj", "{AF76AD0F-7E53-4FCD-AB8B-A74017B8572B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "src\Core.Application\Core.Application.csproj", "{AF76AD0F-7E53-4FCD-AB8B-A74017B8572B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Domain", "src\Core.Domain\Core.Domain.csproj", "{3DBE18E2-84C0-4349-80C3-7C1D4B2BAC8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain", "src\Core.Domain\Core.Domain.csproj", "{3DBE18E2-84C0-4349-80C3-7C1D4B2BAC8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure", "src\Core.Infrastructure\Core.Infrastructure.csproj", "{1A9D4B90-3281-4980-B37E-192FCD472E3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure", "src\Core.Infrastructure\Core.Infrastructure.csproj", "{1A9D4B90-3281-4980-B37E-192FCD472E3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Presentation", "src\Core.Presentation\Core.Presentation.csproj", "{C627B3E8-2B45-4924-A8FA-0C351318B554}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Presentation", "src\Core.Presentation\Core.Presentation.csproj", "{C627B3E8-2B45-4924-A8FA-0C351318B554}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Presentation.Api", "src\Core.Presentation.Api\Core.Presentation.Api.csproj", "{927E9432-B8BB-4C4F-A08B-4335DCB95C23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Presentation.Api", "src\Core.Presentation.Api\Core.Presentation.Api.csproj", "{927E9432-B8BB-4C4F-A08B-4335DCB95C23}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3CCA19BB-862D-4F28-BE4C-121F2BF265D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Application.UnitTests", "tests\Core.Application.UnitTests\Core.Application.UnitTests.csproj", "{81051584-8D51-4AF3-BE6C-5E2AE1BD6330}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application.UnitTests", "tests\Core.Application.UnitTests\Core.Application.UnitTests.csproj", "{81051584-8D51-4AF3-BE6C-5E2AE1BD6330}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Domain.UnitTests", "tests\Core.Domain.UnitTests\Core.Domain.UnitTests.csproj", "{2C994351-24FF-4FDD-8B9C-79E67301DF87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain.UnitTests", "tests\Core.Domain.UnitTests\Core.Domain.UnitTests.csproj", "{2C994351-24FF-4FDD-8B9C-79E67301DF87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure.UnitTests", "tests\Core.Infrastructure.UnitTests\Core.Infrastructure.UnitTests.csproj", "{17B94BD6-9650-44DF-87D4-B154BFC27531}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure.UnitTests", "tests\Core.Infrastructure.UnitTests\Core.Infrastructure.UnitTests.csproj", "{17B94BD6-9650-44DF-87D4-B154BFC27531}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Presentation.Api.UnitTests", "tests\Core.Presentation.Api.UnitTests\Core.Presentation.Api.UnitTests.csproj", "{287C3112-0968-4B36-BAAA-C1A33C77E7ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Presentation.Api.UnitTests", "tests\Core.Presentation.Api.UnitTests\Core.Presentation.Api.UnitTests.csproj", "{287C3112-0968-4B36-BAAA-C1A33C77E7ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Presentation.UnitTests", "tests\Core.Presentation.UnitTests\Core.Presentation.UnitTests.csproj", "{1C3C5375-C4B6-4B3A-AE0B-303076ED1741}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Presentation.UnitTests", "tests\Core.Presentation.UnitTests\Core.Presentation.UnitTests.csproj", "{1C3C5375-C4B6-4B3A-AE0B-303076ED1741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure.Persistence", "src\Core.Infrastructure.Persistence\Core.Infrastructure.Persistence.csproj", "{848A3D08-53FA-4EC9-B53E-84003872091B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure.Persistence", "src\Core.Infrastructure.Persistence\Core.Infrastructure.Persistence.csproj", "{848A3D08-53FA-4EC9-B53E-84003872091B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure.Persistence.UnitTests", "tests\Core.Infrastructure.Persistence.UnitTests\Core.Infrastructure.Persistence.UnitTests.csproj", "{E1881414-B26F-4ED6-8735-69F24ADA226D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure.Persistence.UnitTests", "tests\Core.Infrastructure.Persistence.UnitTests\Core.Infrastructure.Persistence.UnitTests.csproj", "{E1881414-B26F-4ED6-8735-69F24ADA226D}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5F64B774-85BA-431A-A2BA-B5D246D39920}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AF76AD0F-7E53-4FCD-AB8B-A74017B8572B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -88,6 +87,13 @@ Global
 		{E1881414-B26F-4ED6-8735-69F24ADA226D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1881414-B26F-4ED6-8735-69F24ADA226D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1881414-B26F-4ED6-8735-69F24ADA226D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F64B774-85BA-431A-A2BA-B5D246D39920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F64B774-85BA-431A-A2BA-B5D246D39920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F64B774-85BA-431A-A2BA-B5D246D39920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F64B774-85BA-431A-A2BA-B5D246D39920}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AF76AD0F-7E53-4FCD-AB8B-A74017B8572B} = {A3787837-5B9F-4C97-A5EA-E66F18D72665}

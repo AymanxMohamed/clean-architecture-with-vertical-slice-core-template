@@ -1,0 +1,63 @@
+version: "3.4"
+
+services:
+  sql-server-db:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: sql-server-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Ayman123@
+    ports:
+      - "1444:1433"
+    volumes:
+      - sql-data:/var/opt/mssql
+    networks:
+      - sampleproject-network
+
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Ayman123@
+      - POSTGRES_DB=test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - sampleproject-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "9090:80"
+    networks:
+      - sampleproject-network
+
+  core.presentation.api:
+    image: ${DOCKER_REGISTRY-}corepresentationapi
+    build:
+      context: .
+      dockerfile: src/Core.Presentation.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sql-server-db
+      - postgres-db
+    networks:
+      - sampleproject-network
+
+volumes:
+  postgres-data:
+    driver: local
+  sql-data:
+    driver: local
+
+networks:
+  sampleproject-network:
+    driver: bridge
