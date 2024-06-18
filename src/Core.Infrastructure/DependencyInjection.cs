@@ -2,11 +2,12 @@
 
 using Core.Application.Authentication.Interfaces;
 using Core.Application.Common.Contexts;
+using Core.Application.Common.Services;
 using Core.Domain.Common.Services;
-using Core.Infrastructure.Authentication;
 using Core.Infrastructure.Authentication.PasswordHasher;
 using Core.Infrastructure.Authentication.TokenGenerator;
 using Core.Infrastructure.Common.Services;
+using Core.Infrastructure.Common.Services.Email;
 using Core.Infrastructure.Services;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,7 +25,8 @@ public static class DependencyInjection
         return services
             .AddCommonServices()
             .AddAuth(configuration)
-            .AddUserContext();
+            .AddUserContext()
+            .AddEmailServices(configuration);
     }
 
     private static IServiceCollection AddCommonServices(this IServiceCollection services)
@@ -58,5 +60,17 @@ public static class DependencyInjection
     private static IServiceCollection AddUserContext(this IServiceCollection services)
     {
         return services.AddTransient<IUserContextService, UserContextService>();
+    }
+    
+    private static IServiceCollection AddEmailServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        var emailServiceOptions = configuration
+                                      .GetSection(nameof(EmailServerSettings))
+                                      .Get<EmailServerSettings>() 
+                                  ?? throw new ApplicationException(
+                                      message: "Email service Settings must be added to appsettings.json file");
+        return services
+            .AddSingleton(emailServiceOptions)
+            .AddScoped<IEmailService, EmailService>();
     }
 }

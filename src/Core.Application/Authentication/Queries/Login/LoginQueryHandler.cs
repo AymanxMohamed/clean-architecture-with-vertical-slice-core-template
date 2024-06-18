@@ -3,7 +3,6 @@ using Core.Application.Authentication.Interfaces;
 using Core.Application.Authentication.Specifications;
 using Core.Application.Common.Mediatr.Messages.Queries;
 using Core.Application.Common.Persistence;
-using Core.Application.Common.Users;
 using Core.Domain.Aggregates.UserAggregate;
 using Core.Domain.Aggregates.UserAggregate.ValueObjects;
 using Core.Domain.Common.Errors;
