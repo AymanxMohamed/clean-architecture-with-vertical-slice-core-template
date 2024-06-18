@@ -1,4 +1,7 @@
-﻿using Core.Presentation.Common.Constants.Endpoints;
+﻿using Core.Infrastructure.Persistence;
+using Core.Presentation.Common.Constants.Endpoints;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Presentation.Api;
 
@@ -18,7 +21,22 @@ public static class MiddlewarePipeline
         app.UseAuthorization();
         
         app.MapControllers();
+
+        app.ApplyDatabasePendingMigrations();
         
+        return app;
+    }
+
+    private static WebApplication ApplyDatabasePendingMigrations(this WebApplication app)
+    {
+        var serviceProvider = app.Services;
+
+        using var scope = serviceProvider.CreateScope();
+        
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        dbContext.Database.Migrate();
+
         return app;
     }
 }

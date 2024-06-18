@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Ayman Mohamed",
+    "classifications": [
+        "Api",
+        "Console"
+    ],
+    "identity": "Core.Template",
+    "name": "Core Template",
+    "shortname": "core-template",
+    "sourceName": "Core",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "preferNameDirectory": true
+}
