@@ -1,6 +1,7 @@
 ﻿using Core.Infrastructure.Persistence.Common.Extensions;
 using Core.Infrastructure.Persistence.Common.Settings;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,6 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         
         optionsBuilder.ConfigureFromDatabaseConfigurations(databaseConfigurations);
         
-        return new ApplicationDbContext(optionsBuilder.Options);
+        return new ApplicationDbContext(optionsBuilder.Options, new HttpContextAccessor());
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Core.Infrastructure.Persistence;
+using Core.Infrastructure.Persistence.Common.Middlewares;
 using Core.Presentation.Common.Constants.Endpoints;
 
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ public static class MiddlewarePipeline
     public static WebApplication UseCoreMiddlewarePipeLine(this WebApplication app)
     {
         app.UseExceptionHandler(CoreEndpoints.GlobalErrorHandlingEndPoint);
+        app.UseMiddleware<EventualConsistencyMiddleware>();
         app.UseHsts();
         
         app.UseSwagger();

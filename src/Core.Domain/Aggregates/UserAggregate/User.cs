@@ -1,4 +1,5 @@
-﻿using Core.Domain.Aggregates.UserAggregate.ValueObjects;
+﻿using Core.Domain.Aggregates.UserAggregate.Events;
+using Core.Domain.Aggregates.UserAggregate.ValueObjects;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Services;
 
@@ -24,6 +25,8 @@ public class User : AuditableEntity<UserId>
         LastName = lastName;
         Email = email;
         _passwordHash = passwordHash;
+        
+        AddDomainEvent(new UserCreatedDomainEvent(Id));
     }
 
     public string FirstName { get; private set; }

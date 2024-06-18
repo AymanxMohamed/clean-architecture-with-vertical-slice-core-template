@@ -4,35 +4,32 @@ using Core.Domain.Common.Interfaces;
 
 namespace Core.Domain.Common.Models;
 
-public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>, IHasDomainEvents
-    where TEntityId : notnull
+public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
+    where TId : notnull
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 
-    protected Entity(TEntityId id) => Id = id;
+    protected Entity(TId id) => Id = id;
 
     protected Entity()
     {
     }
 
     [JsonProperty("id")]
-    public TEntityId Id { get; }
+    public TId Id { get; }
 
-    [JsonIgnore]
-    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
-    
-    public static bool operator ==(Entity<TEntityId> left, Entity<TEntityId> right) => Equals(left, right);
+    public static bool operator ==(Entity<TId> left, Entity<TId> right) => Equals(left, right);
 
-    public static bool operator !=(Entity<TEntityId> left, Entity<TEntityId> right) => !Equals(left, right);
+    public static bool operator !=(Entity<TId> left, Entity<TId> right) => !Equals(left, right);
 
-    public bool Equals(Entity<TEntityId>? other)
+    public bool Equals(Entity<TId>? other)
     {
         return Equals((object?)other);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Entity<TEntityId> entity && Id.Equals(entity.Id);
+        return obj is Entity<TId> entity && Id.Equals(entity.Id);
     }
 
     public override int GetHashCode()
@@ -40,10 +37,14 @@ public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>, IHasDom
         return Id.GetHashCode();
     }
 
-    public void ClearDomainEvents()
+    public IReadOnlyList<IDomainEvent> PopDomainEvents()
     {
+        var domainEvents = _domainEvents.ToList();
+
         _domainEvents.Clear();
+        
+        return domainEvents;
     }
-    
+
     internal void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
 }
