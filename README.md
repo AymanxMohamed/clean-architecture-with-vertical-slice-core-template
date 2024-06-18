@@ -2,6 +2,7 @@
 
 ## Table Of Content
 
+- [Getting Started](#getting-started)
 - [Overview](#overview)
 - [Packages](#packages)
   - [MediatR](#mediatr)
@@ -16,6 +17,20 @@
   - [Presentation Layer](#presentation-layer)
   - [Additional Service](#additional-services)
   - [Notes](#notes)
+
+## Getting Started
+
+- Install the template using
+
+```sh
+ dotnet new --install .
+```
+
+- Create a new project with the template
+
+```sh
+dotnet new core-template -o ProjectName
+```
 
 ## Overview
 
