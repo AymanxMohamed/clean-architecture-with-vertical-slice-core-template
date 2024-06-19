@@ -17,6 +17,8 @@
   - [Presentation Layer](#presentation-layer)
   - [Additional Service](#additional-services)
   - [Notes](#notes)
+- [Cross Cutting Concerns](#cross-cutting-concerns)
+  - [Logging](#logging)
 
 ## Getting Started
 
@@ -125,3 +127,14 @@ presentation/
 ### Notes
 
 - **Presentation.API Layer**: Serves as the web application responsible for assembling all other layers without maintaining business logic.
+
+## Cross Cutting Concerns
+
+### Logging
+
+The Template supports Logging with Serilog with different sinks all configured using appsettings.json file
+
+- **Console**
+- **File**
+- **Seq**
+- **Elastic Search**
