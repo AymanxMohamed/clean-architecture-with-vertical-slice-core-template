@@ -49,7 +49,38 @@ services:
       - "8081:80"
     networks:
       - sampleproject-network
-
+        
+  core.elastic.search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.0
+    container_name: core.elastic.search
+    environment:
+      - node.name=core.elastic.search
+      - cluster.name=core.elastic.search.cluster
+      - cluster.initial_master_nodes=core.elastic.search
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elastic-search-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+     - sampleproject-network
+  
+  core.kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.0
+    container_name: core.kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://core.elastic.search:9200
+      ELASTICSEARCH_HOSTS: http://core.elastic.search:9200
+    networks:
+      - sampleproject-network
+  
   core.presentation.api:
     image: ${DOCKER_REGISTRY-}corepresentationapi
     build:
@@ -67,6 +98,8 @@ volumes:
   postgres-data:
     driver: local
   sql-data:
+    driver: local
+  elastic-search-data:
     driver: local
 
 networks:
