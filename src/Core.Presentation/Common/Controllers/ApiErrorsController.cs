@@ -1,18 +1,24 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Core.Presentation.Common.Constants.Endpoints;
+
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Presentation.Common.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
-public class ApiErrorsController : ControllerBase
+[ApiController]
+public class ApiErrorsController(ILogger<ApiErrorsController> logger) : ControllerBase
 {
-    [Route("/error")]
+    [Route(template: CoreEndpoints.GlobalErrorHandlingEndPoint)]
     [HttpGet]
     public IActionResult Error()
     {
         var exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
-
+        
+        logger.LogError(exception, "Exception occured: {Message}, {@Exception}", exception?.Message, exception);
+        
         var (statusCode, message) = exception switch
         {
             _ => (StatusCodes.Status500InternalServerError, "An unexpected error occured.")

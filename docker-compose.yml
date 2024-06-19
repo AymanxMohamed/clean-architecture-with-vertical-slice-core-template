@@ -39,6 +39,17 @@ services:
     networks:
       - sampleproject-network
 
+  core.seq:
+    image: datalust/seq:latest
+    container_name: core-seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "8081:80"
+    networks:
+      - sampleproject-network
+
   core.presentation.api:
     image: ${DOCKER_REGISTRY-}corepresentationapi
     build:

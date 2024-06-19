@@ -28,6 +28,8 @@ public static class DependencyInjection
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssemblies(CoreApplicationAssemblyMarker.Assembly, assembly);
+            configuration.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
+            configuration.AddOpenBehavior(typeof(ExceptionHandlingBehavior<,>));
             configuration.AddOpenBehavior(typeof(UnitOfWorkBehaviour<,>));
         });
         
