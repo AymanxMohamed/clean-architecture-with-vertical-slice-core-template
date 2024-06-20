@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.Presentation.Authentication.Controllers.V1;
+namespace Core.Presentation.Authentication.Controllers;
 
 [AllowAnonymous]
 public class AuthenticationController(ISender sender, IMapper mapper) : ApiController(sender, mapper)
