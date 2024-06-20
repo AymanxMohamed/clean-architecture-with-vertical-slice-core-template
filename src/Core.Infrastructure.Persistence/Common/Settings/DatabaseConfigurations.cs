@@ -25,6 +25,12 @@ public class DatabaseConfigurations
     public bool Encrypt { get; init; }
     
     public string ConnectionString => SqlServerEnabled ? SqlServerConnectionString : PostgresqlConnectionString;
+    
+    public string MigrationAssembly => SqlServerEnabled 
+        ? $"{CurrentAssemblyName}.SqlServer" 
+        : $"{CurrentAssemblyName}.Postgres";
+
+    private string CurrentAssemblyName => CoreInfrastructurePersistenceAssemblyMarker.Assembly.GetName().Name!;
 
     private string SqlServerConnectionString => new SqlConnectionStringBuilder
     {

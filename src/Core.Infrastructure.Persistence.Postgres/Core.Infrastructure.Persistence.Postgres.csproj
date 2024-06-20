@@ -5,4 +5,8 @@
         <LangVersion>12</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Core.Infrastructure.Persistence\Core.Infrastructure.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>
