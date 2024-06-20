@@ -1,6 +1,4 @@
-﻿using Asp.Versioning;
-
-using Core.Application.Authentication.Commands.Register;
+﻿using Core.Application.Authentication.Commands.Register;
 using Core.Application.Authentication.Dtos;
 using Core.Application.Authentication.Queries.Login;
 using Core.Domain.Common.Errors;
@@ -17,11 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Core.Presentation.Authentication.Controllers.V1;
 
-[ApiVersion(1, Deprecated = true)]
 [AllowAnonymous]
 public class AuthenticationController(ISender sender, IMapper mapper) : ApiController(sender, mapper)
 {
-    [ApiVersion(3)]
     [HttpPost("register")]
     [ProducesResponseType<AuthenticationResponse>(statusCode: StatusCodes.Status200OK)]
     [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
