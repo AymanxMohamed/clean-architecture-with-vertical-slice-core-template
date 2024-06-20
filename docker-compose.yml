@@ -34,6 +34,8 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - postgres-db
     ports:
       - "9090:80"
     networks:
@@ -78,6 +80,8 @@ services:
     environment:
       ELASTICSEARCH_URL: http://core.elastic.search:9200
       ELASTICSEARCH_HOSTS: http://core.elastic.search:9200
+    depends_on:
+      - core.elastic.search
     networks:
       - sampleproject-network
   
@@ -91,6 +95,8 @@ services:
     depends_on:
       - sql-server-db
       - postgres-db
+      - core.seq
+      - core.elastic.search
     networks:
       - sampleproject-network
 

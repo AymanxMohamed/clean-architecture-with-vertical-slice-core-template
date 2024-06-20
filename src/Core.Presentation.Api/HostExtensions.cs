@@ -1,4 +1,6 @@
-﻿using Serilog;
+﻿using Core.Presentation.Api.Settings.Serilog;
+
+using Serilog;
 using Serilog.Sinks.Elasticsearch;
 
 namespace Core.Presentation.Api;
@@ -14,15 +16,15 @@ public static class HostExtensions
     {
         host.UseSerilog((context, configuration) =>
         {
+            var serilogSettings = context.Configuration.GetSection(SerilogSettings.SectionName)
+                .Get<SerilogSettings>() ?? throw new NotSupportedException(
+                message: "you have to add serilog section in the configuration files");
+
+            var elasticSearchSinkOptions = serilogSettings.GetElasticSearchSinkOptions(context);
+            
             configuration
                 .ReadFrom.Configuration(context.Configuration)
-                .WriteTo.Elasticsearch(
-                    new ElasticsearchSinkOptions
-                    {
-                        IndexFormat = $"{context.Configuration["ApplicationName"]}-logs-" +
-                                      $"{context.HostingEnvironment.EnvironmentName.ToLower().Replace('.', '-')}" +
-                                      $"-{DateTime.UtcNow:yyyy-MM}"
-                    });
+                .WriteTo.Elasticsearch(elasticSearchSinkOptions);
         });
         
         return host;
