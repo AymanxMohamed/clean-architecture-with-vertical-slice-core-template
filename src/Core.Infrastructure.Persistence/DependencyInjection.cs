@@ -46,11 +46,15 @@ public static class DependencyInjection
 
     private static IServiceCollection AddGenericRepositoryWithSpecification(this IServiceCollection services)
     {
-        services.AddTransient(
+        services.AddScoped(
             serviceType: typeof(IGenericRepository<,>),  
             implementationType: typeof(GenericRepository<,>));
-
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
+        
+        services.Decorate(
+            serviceType: typeof(IGenericRepository<,>), 
+            decoratorType: typeof(GenericCachingRepository<,>));
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;
     }
