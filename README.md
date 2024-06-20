@@ -18,7 +18,12 @@
   - [Additional Service](#additional-services)
   - [Notes](#notes)
 - [Cross Cutting Concerns](#cross-cutting-concerns)
-  - [Logging](#logging)
+  - [Logging](#Logging)
+  - [Caching](#caching)
+    - [Caching Service](#caching-service)
+    - [Generic Cached Repository](#generic-cached-repository)
+  - [Api Versioning](#api-versioning)
+  - [Health Checks](#health-checks)
 
 ## Getting Started
 
@@ -138,3 +143,55 @@ The Template supports Logging with Serilog with different sinks all configured u
 - **File**
 - **Seq**
 - **Elastic Search**
+
+
+### Caching
+
+#### Caching Service
+
+The Template Contains ICachingService that relies behind the scene on IDistributed Cache Interface
+
+Examples:
+
+```csharp
+
+public interface ICachingService
+{
+    Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
+        where T : class;
+    
+    Task<T?> GetOrCreateAsync<T>(string key, Func<Task<T?>> factory, CancellationToken cancellationToken = default)
+        where T : class;
+    
+    Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default)
+        where T : class;
+    
+    Task RemoveAsync(string key, CancellationToken cancellationToken = default);
+
+    Task RemoveByPrefixAsync(string keyPrefix, CancellationToken cancellationToken = default);
+
+    Task<ConcurrentDictionary<string, bool>> GetCacheKeys(CancellationToken cancellationToken = default);
+}
+
+// the factory method will be executed if the key doesn't exists 
+// in he cache and after that it will store it in the cache
+ await cachingService.GetOrCreateAsync(
+            key: "products", 
+            factory: async () => await GetProductsFromDatabase(), 
+            cancellationToken);
+```
+
+### Generic Cached Repository
+
+Supported an interface ICachedGenericRepository that handles caching behind the scenes for all the repository methods
+
+```csharp
+public interface ICachedGenericRepository<TEntity, TEntityId> : IGenericRepository<TEntity, TEntityId>
+    where TEntity : Entity<TEntityId>
+    where TEntityId : notnull;
+```
+
+### Api Versioning
+
+### Health Checks
+
