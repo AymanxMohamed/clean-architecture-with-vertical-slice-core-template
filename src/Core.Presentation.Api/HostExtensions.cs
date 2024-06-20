@@ -1,4 +1,4 @@
-﻿using Core.Presentation.Api.Settings.Serilog;
+﻿using Core.Presentation.Api.Common.Settings.Serilog;
 
 using Serilog;
 

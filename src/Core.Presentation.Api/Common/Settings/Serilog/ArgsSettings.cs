@@ -1,6 +1,6 @@
 ﻿using Serilog.Sinks.Elasticsearch;
 
-namespace Core.Presentation.Api.Settings.Serilog;
+namespace Core.Presentation.Api.Common.Settings.Serilog;
 
 public sealed class ArgsSettings
 {

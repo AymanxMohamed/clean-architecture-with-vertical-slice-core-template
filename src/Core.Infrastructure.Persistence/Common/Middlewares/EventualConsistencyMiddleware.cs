@@ -1,5 +1,6 @@
 ﻿using Core.Domain.Common.EventualConsistency;
 using Core.Domain.Common.Interfaces;
+using Core.Presentation.Common.Constants.Endpoints;
 
 using MediatR;
 
@@ -13,6 +14,12 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
 
     public async Task InvokeAsync(HttpContext context, IPublisher publisher, ApplicationDbContext dbContext)
     {
+        if (context.Request.Path.Equals(other: CoreEndpoints.HealthCheckEndpoint, StringComparison.OrdinalIgnoreCase))
+        {
+            await next(context);
+            return;
+        }
+
         var transaction = await dbContext.Database.BeginTransactionAsync();
         
         context.Response.OnCompleted(async () =>

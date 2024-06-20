@@ -5,6 +5,7 @@ using Core.Infrastructure.Persistence.Common.Extensions;
 using Core.Infrastructure.Persistence.Common.Repositories;
 using Core.Infrastructure.Persistence.Common.Services;
 using Core.Infrastructure.Persistence.Common.Settings;
+using Core.Infrastructure.Persistence.Health;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,19 +63,13 @@ public static class DependencyInjection
 
         if (databaseConfigurations.SqlServerEnabled)
         {
-            healthCheckBuilder.AddSqlServer(
-                databaseConfigurations.ConnectionString, 
-                failureStatus: HealthStatus.Unhealthy);
+            healthCheckBuilder.AddSqlServer(databaseConfigurations.ConnectionString);
         }
         else
         {
-            healthCheckBuilder.AddNpgSql(
-                databaseConfigurations.ConnectionString, 
-                failureStatus: HealthStatus.Unhealthy);
+            healthCheckBuilder.AddNpgSql(databaseConfigurations.ConnectionString);
         }
 
-        healthCheckBuilder.AddDbContextCheck<ApplicationDbContext>(failureStatus: HealthStatus.Unhealthy);
-        
         healthCheckBuilder.AddRedis("Redis Connection string", failureStatus: HealthStatus.Degraded);
         
         return services;

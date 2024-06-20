@@ -1,5 +1,6 @@
 ﻿using Core.Infrastructure.Persistence;
 using Core.Infrastructure.Persistence.Common.Middlewares;
+using Core.Presentation.Api.Common.Middlewares;
 using Core.Presentation.Common.Constants.Endpoints;
 
 using HealthChecks.UI.Client;
@@ -13,8 +14,10 @@ public static class MiddlewarePipeline
 {
     public static WebApplication UseCoreMiddlewarePipeLine(this WebApplication app)
     {
+        app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
         app.UseExceptionHandler(CoreEndpoints.GlobalErrorHandlingEndPoint);
         app.UseMiddleware<EventualConsistencyMiddleware>();
+        
         app.UseHsts();
 
         app.UseSwagger();
@@ -26,8 +29,9 @@ public static class MiddlewarePipeline
         {
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
-
+        
         app.UseAuthentication(); 
+        
         app.UseAuthorization();
         
         app.MapControllers();
