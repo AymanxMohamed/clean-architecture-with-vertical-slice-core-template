@@ -20,18 +20,6 @@ public static class MiddlewarePipeline
         
         app.UseHsts();
 
-        app.UseHttpsRedirection();
-
-        app.MapHealthChecks(pattern: CoreEndpoints.HealthCheckEndpoint, new HealthCheckOptions
-        {
-            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-        });
-        
-        app.UseAuthentication(); 
-        
-        app.UseAuthorization();
-        
-        app.MapControllers();
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
@@ -44,6 +32,20 @@ public static class MiddlewarePipeline
                 options.SwaggerEndpoint(url, name);
             }
         });
+        
+        app.UseHttpsRedirection();
+
+        app.MapHealthChecks(pattern: CoreEndpoints.HealthCheckEndpoint, new HealthCheckOptions
+        {
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
+        
+        app.UseAuthentication(); 
+        
+        app.UseAuthorization();
+        
+        app.MapControllers();
+  
         app.ApplyDatabasePendingMigrations();
         
         return app;

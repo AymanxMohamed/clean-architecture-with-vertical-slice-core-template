@@ -21,6 +21,7 @@ namespace Core.Presentation.Authentication.Controllers.V1;
 [AllowAnonymous]
 public class AuthenticationController(ISender sender, IMapper mapper) : ApiController(sender, mapper)
 {
+    [ApiVersion(3)]
     [HttpPost("register")]
     [ProducesResponseType<AuthenticationResponse>(statusCode: StatusCodes.Status200OK)]
     [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
