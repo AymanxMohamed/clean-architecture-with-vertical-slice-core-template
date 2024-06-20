@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 
 namespace Core.Infrastructure.Persistence.Common.Repositories;
 
-public class GenericCachingRepository<TEntity, TEntityId>(
-    IGenericRepository<TEntity, TEntityId> decoratedRepository,
+public class CachedGenericRepository<TEntity, TEntityId>(
+    IGenericRepository<TEntity, TEntityId> genericRepository,
     ICachingService cachingService)
-    : IGenericRepository<TEntity, TEntityId>
+    : ICachedGenericRepository<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
     where TEntityId : notnull
 {
@@ -21,17 +21,7 @@ public class GenericCachingRepository<TEntity, TEntityId>(
    
     public async Task<int> CountAllAsync(CancellationToken cancellationToken = default)
     {
-        var result = await cachingService.GetOrCreateAsync(
-            OperationKey(nameof(CountAllAsync)), 
-            factory: async () => (object)await decoratedRepository.CountAllAsync(cancellationToken), 
-            cancellationToken);
-
-        if (result is null)
-        {
-            return default;
-        }
-
-        return (int)result;
+        return await genericRepository.CountAllAsync(cancellationToken);
     }
 
     public async Task<int> CountAsync(
@@ -39,72 +29,42 @@ public class GenericCachingRepository<TEntity, TEntityId>(
         bool countAllExcludingPagination = false,
         CancellationToken cancellationToken = default)
     {
-        var countAllExcludingPart = countAllExcludingPagination ? "-without-pagination" : string.Empty;
-            
-        var result = await cachingService.GetOrCreateAsync(
-            SpecificationKey(specification, $"{nameof(CountAsync)}{countAllExcludingPart}"), 
-            factory: async () => (object)await decoratedRepository.CountAsync(
-                specification, 
-                countAllExcludingPagination, 
-                cancellationToken), 
-            cancellationToken);
-        
-        if (result is null)
-        {
-            return default;
-        }
-
-        return (int)result;
+        return await genericRepository.CountAsync(specification, countAllExcludingPagination, cancellationToken);
     }
 
     public async Task<PaginationResult<TEntity, TEntityId>> GetPaginationAsync(
         ISpecification<TEntity, TEntityId> specification, 
         CancellationToken cancellationToken = default)
     {
-        return await cachingService.GetOrCreateAsync(
-            SpecificationKey(specification, nameof(GetPaginationAsync)), 
-            factory: async () => await decoratedRepository.GetPaginationAsync(specification, cancellationToken), 
-            cancellationToken) ?? throw new InvalidOperationException();
+        return await genericRepository.GetPaginationAsync(specification, cancellationToken);
     }
 
     public async Task<List<TEntity>> GetAsync(
         ISpecification<TEntity, TEntityId> specification, 
         CancellationToken cancellationToken = default)
     {
-        return await cachingService.GetOrCreateAsync(
-            SpecificationKey(specification, nameof(GetAsync)), 
-            factory: async () => await decoratedRepository.GetAsync(specification, cancellationToken), 
-            cancellationToken) ?? throw new InvalidOperationException();
+        return await genericRepository.GetAsync(specification, cancellationToken);
     }
 
     public async Task<List<TEntity>> GetReadyOnlyAsync(
         ISpecification<TEntity, TEntityId> specification, 
         CancellationToken cancellationToken = default)
     {
-        return await cachingService.GetOrCreateAsync(
-            SpecificationKey(specification, nameof(GetReadyOnlyAsync)), 
-            factory: async () => await decoratedRepository.GetReadyOnlyAsync(specification, cancellationToken), 
-            cancellationToken) ?? throw new InvalidOperationException();
+        return await genericRepository.GetReadyOnlyAsync(specification, cancellationToken);
     }
 
     public async Task<TEntity?> GetFirstOrDefault(
         ISpecification<TEntity, TEntityId> specification, 
         CancellationToken cancellationToken = default)
     {
-        return await cachingService.GetOrCreateAsync(
-            SpecificationKey(specification, nameof(GetFirstOrDefault)),
-            factory: async () => await decoratedRepository.GetFirstOrDefault(specification, cancellationToken),
-            cancellationToken);
+        return await genericRepository.GetFirstOrDefault(specification, cancellationToken);
     }
 
     public async Task<TEntity?> GetFirstOrDefaultReadyOnly(
         ISpecification<TEntity, TEntityId> specification, 
         CancellationToken cancellationToken = default)
     {
-        return await cachingService.GetOrCreateAsync(
-            SpecificationKey(specification, nameof(GetFirstOrDefaultReadyOnly)),
-            factory: async () => await decoratedRepository.GetFirstOrDefaultReadyOnly(specification, cancellationToken),
-            cancellationToken);
+        return await genericRepository.GetFirstOrDefaultReadyOnly(specification, cancellationToken);
     }
 
     public async Task<bool> CheckExistAsync(
@@ -123,7 +83,7 @@ public class GenericCachingRepository<TEntity, TEntityId>(
     {
         return await cachingService.GetOrCreateAsync(
             MemberKey(id), 
-            factory: async () => await decoratedRepository.GetByIdAsync(id, cancellationToken), 
+            factory: async () => await genericRepository.GetByIdAsync(id, cancellationToken), 
             cancellationToken);
     }
 
@@ -131,13 +91,13 @@ public class GenericCachingRepository<TEntity, TEntityId>(
     {
         return await cachingService.GetOrCreateAsync(
             CollectionCacheKey, 
-            factory: async () => await decoratedRepository.ListAllAsync(cancellationToken), 
+            factory: async () => await genericRepository.ListAllAsync(cancellationToken), 
             cancellationToken) ?? []; 
     }
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var result = await decoratedRepository.AddAsync(entity, cancellationToken);
+        var result = await genericRepository.AddAsync(entity, cancellationToken);
         
         await cachingService.SetAsync(MemberKey(entity.Id), result, cancellationToken);
         
@@ -146,21 +106,21 @@ public class GenericCachingRepository<TEntity, TEntityId>(
 
     public void Update(TEntity entity)
     {
-        decoratedRepository.Update(entity);
+        genericRepository.Update(entity);
         cachingService.RemoveAsync(MemberKey(entity.Id)).Wait();
         cachingService.RemoveAsync(CollectionCacheKey).Wait();
     }
 
     public void Delete(TEntity entity)
     {
-        decoratedRepository.Delete(entity);
+        genericRepository.Delete(entity);
         cachingService.RemoveAsync(MemberKey(entity.Id)).Wait();
         cachingService.RemoveAsync(CollectionCacheKey).Wait();
     }
 
     public void DeleteRange(Func<TEntity, bool> predicate)
     {
-        decoratedRepository.DeleteRange(predicate);
+        genericRepository.DeleteRange(predicate);
         cachingService.RemoveByPrefixAsync(CollectionCacheKey).Wait();
     }
     

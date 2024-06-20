@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 
 using Core.Application.Common.Persistence;
+using Core.Application.Common.Services;
 using Core.Infrastructure.Persistence.Common.Extensions;
 using Core.Infrastructure.Persistence.Common.Repositories;
 using Core.Infrastructure.Persistence.Common.Services;
@@ -50,9 +51,9 @@ public static class DependencyInjection
             serviceType: typeof(IGenericRepository<,>),  
             implementationType: typeof(GenericRepository<,>));
         
-        services.Decorate(
-            serviceType: typeof(IGenericRepository<,>), 
-            decoratorType: typeof(GenericCachingRepository<,>));
+        services.AddScoped(
+            serviceType: typeof(ICachedGenericRepository<,>),  
+            implementationType: typeof(CachedGenericRepository<,>));
         
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
