@@ -1,8 +1,11 @@
 ﻿using System.Reflection;
 
+using Asp.Versioning;
+
 using Core.Application;
 using Core.Infrastructure;
 using Core.Infrastructure.Persistence;
+using Core.Presentation.Api.Common.OpenApi;
 
 using Microsoft.OpenApi.Models;
 
@@ -39,7 +42,9 @@ public static class DependencyInjection
 
     private static IServiceCollection AddCoreThirdParties(this IServiceCollection services)
     {
-        return services.AddSwagger();
+        return services
+            .AddCoreApiVersioning()
+            .AddSwagger();
     }
 
     private static IServiceCollection AddSwagger(this IServiceCollection services)
@@ -69,6 +74,25 @@ public static class DependencyInjection
                     Array.Empty<string>()
                 }
             });
-        });
+        }).ConfigureOptions<ConfigureSwaggerGenOptions>();
+    }
+
+    private static IServiceCollection AddCoreApiVersioning(this IServiceCollection services)
+    {
+        services
+            .AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+                options.DefaultApiVersion = new ApiVersion(majorVersion: 1);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+            })
+            .AddMvc()
+            .AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'V";
+                options.SubstituteApiVersionInUrl = true;
+            });
+        return services;
     }
 }

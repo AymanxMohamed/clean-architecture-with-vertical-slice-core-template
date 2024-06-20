@@ -1,4 +1,5 @@
-﻿using Core.Presentation.Common.Constants.HttpConstants;
+﻿// ReSharper disable RouteTemplates.RouteParameterConstraintNotResolved
+using Core.Presentation.Common.Constants.HttpConstants;
 using Core.Presentation.Common.Extensions;
 
 using MapsterMapper;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Core.Presentation.Common.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v{apiVersion:apiVersion}/[controller]")]
 public abstract class ApiController(ISender sender, IMapper mapper) : ControllerBase
 {
     protected readonly ISender _sender = sender;

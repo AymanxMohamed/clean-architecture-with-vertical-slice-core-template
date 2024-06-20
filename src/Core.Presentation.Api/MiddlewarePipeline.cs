@@ -20,9 +20,6 @@ public static class MiddlewarePipeline
         
         app.UseHsts();
 
-        app.UseSwagger();
-        app.UseSwaggerUI();
-
         app.UseHttpsRedirection();
 
         app.MapHealthChecks(pattern: CoreEndpoints.HealthCheckEndpoint, new HealthCheckOptions
@@ -35,7 +32,18 @@ public static class MiddlewarePipeline
         app.UseAuthorization();
         
         app.MapControllers();
-
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            var versions = app.DescribeApiVersions();
+            foreach (var version in versions)
+            {
+                var url = $"/swagger/{version.GroupName}/swagger.json";
+                var name = version.GroupName.ToUpperInvariant();
+                
+                options.SwaggerEndpoint(url, name);
+            }
+        });
         app.ApplyDatabasePendingMigrations();
         
         return app;

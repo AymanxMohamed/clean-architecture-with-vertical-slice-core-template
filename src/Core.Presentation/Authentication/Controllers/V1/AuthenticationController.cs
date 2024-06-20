@@ -1,4 +1,6 @@
-﻿using Core.Application.Authentication.Commands.Register;
+﻿using Asp.Versioning;
+
+using Core.Application.Authentication.Commands.Register;
 using Core.Application.Authentication.Dtos;
 using Core.Application.Authentication.Queries.Login;
 using Core.Domain.Common.Errors;
@@ -11,12 +13,11 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.Presentation.Authentication.Controllers;
+namespace Core.Presentation.Authentication.Controllers.V1;
 
-[Route(template: "api/v1/auth")]
+[ApiVersion(1, Deprecated = true)]
 [AllowAnonymous]
 public class AuthenticationController(ISender sender, IMapper mapper) : ApiController(sender, mapper)
 {
@@ -50,8 +51,6 @@ public class AuthenticationController(ISender sender, IMapper mapper) : ApiContr
                 statusCode: StatusCodes.Status401Unauthorized);
         }
 
-        var test = _mapper.Map<AuthenticationResponse>(authResult.Value);
-        
         return authResult.Match(
             onValue: result => Ok(_mapper.Map<AuthenticationResponse>(result)),
             onError: Problem);
