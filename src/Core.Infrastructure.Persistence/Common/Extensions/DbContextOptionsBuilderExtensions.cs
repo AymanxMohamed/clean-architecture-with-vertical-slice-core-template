@@ -1,4 +1,6 @@
 ﻿using Core.Infrastructure.Persistence.Common.Settings;
+using Core.Infrastructure.Persistence.Postgres;
+using Core.Infrastructure.Persistence.SqlServer;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -14,16 +16,14 @@ public static class DbContextOptionsBuilderExtensions
         {
             optionsBuilder.UseSqlServer(databaseConfigurations.ConnectionString, options =>
             {
-                options.MigrationsAssembly(CoreInfrastructurePersistenceAssemblyMarker.Assembly.GetName().Name);
-                options.MigrationsHistoryTable("__EFMigrationsHistory", "sqlserver");
+                options.MigrationsAssembly(CoreInfrastructurePersistenceSqlServerAssemblyMarker.Assembly.GetName().Name);
             });
         }
         else
         {
             optionsBuilder.UseNpgsql(databaseConfigurations.ConnectionString, options =>
             {
-                options.MigrationsAssembly(CoreInfrastructurePersistenceAssemblyMarker.Assembly.GetName().Name);
-                options.MigrationsHistoryTable("__EFMigrationsHistory", "postgres");
+                options.MigrationsAssembly(CoreInfrastructurePersistencePostgresAssemblyMarker.Assembly.GetName().Name);
             });
         }
     }
