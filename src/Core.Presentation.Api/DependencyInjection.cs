@@ -39,6 +39,11 @@ public static class DependencyInjection
 
     private static IServiceCollection AddCoreThirdParties(this IServiceCollection services)
     {
+        return services.AddSwagger();
+    }
+
+    private static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
         return services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Core", Version = "v1" });

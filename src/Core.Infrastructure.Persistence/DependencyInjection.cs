@@ -8,6 +8,7 @@ using Core.Infrastructure.Persistence.Common.Settings;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Core.Infrastructure.Persistence;
 
@@ -39,7 +40,7 @@ public static class DependencyInjection
             builder.ConfigureFromDatabaseConfigurations(databaseConfigurations);
         });
 
-        return services;
+        return services.AddHealthChecksSupport(databaseConfigurations);
     }
 
     private static IServiceCollection AddGenericRepositoryWithSpecification(this IServiceCollection services)
@@ -49,6 +50,32 @@ public static class DependencyInjection
             implementationType: typeof(GenericRepository<,>));
 
         services.AddTransient<IUnitOfWork, UnitOfWork>();
+        
+        return services;
+    }
+    
+    private static IServiceCollection AddHealthChecksSupport(
+        this IServiceCollection services, 
+        DatabaseConfigurations databaseConfigurations)
+    {
+        var healthCheckBuilder = services.AddHealthChecks();
+
+        if (databaseConfigurations.SqlServerEnabled)
+        {
+            healthCheckBuilder.AddSqlServer(
+                databaseConfigurations.ConnectionString, 
+                failureStatus: HealthStatus.Unhealthy);
+        }
+        else
+        {
+            healthCheckBuilder.AddNpgSql(
+                databaseConfigurations.ConnectionString, 
+                failureStatus: HealthStatus.Unhealthy);
+        }
+
+        healthCheckBuilder.AddDbContextCheck<ApplicationDbContext>(failureStatus: HealthStatus.Unhealthy);
+        
+        healthCheckBuilder.AddRedis("Redis Connection string", failureStatus: HealthStatus.Degraded);
         
         return services;
     }

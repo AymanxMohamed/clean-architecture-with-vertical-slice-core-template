@@ -1,7 +1,6 @@
 ﻿using Core.Presentation.Api.Settings.Serilog;
 
 using Serilog;
-using Serilog.Sinks.Elasticsearch;
 
 namespace Core.Presentation.Api;
 
