@@ -100,6 +100,7 @@ public class CachedGenericRepository<TEntity, TEntityId>(
         var result = await genericRepository.AddAsync(entity, cancellationToken);
         
         await cachingService.SetAsync(MemberKey(entity.Id), result, cancellationToken);
+        await cachingService.RemoveAsync(CollectionCacheKey, cancellationToken);
         
         return result;
     }
@@ -128,6 +129,7 @@ public class CachedGenericRepository<TEntity, TEntityId>(
     
     private static string SpecificationKey<TSpec>(TSpec specification, string operationName)
     {
+        // todo: we need to handle the circular dependency while serializing the specification
         var json = JsonConvert.SerializeObject(specification);
         var hashBytes = SHA256.HashData(source: Encoding.UTF8.GetBytes(json));
         var hash = BitConverter.ToString(hashBytes).Replace(oldValue: "-", newValue: string.Empty);

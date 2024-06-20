@@ -16,15 +16,15 @@ public abstract class AuditableEntity<TEntityId> : Entity<TEntityId>, IAuditable
     {
     }
 
-    public DateTime CreatedOnUtc { get; private set; }
+    public DateTime CreatedOnUtc { get; init; }
     
-    public DateTime ModifiedOnUtc { get; private set; }
+    public DateTime ModifiedOnUtc { get; init; }
 
-    public UserId? CreatedById { get; private set; }
+    public UserId? CreatedById { get; init; }
     
-    public UserId? ModifiedById { get; private set; }
+    public UserId? ModifiedById { get; init; }
 
-    public virtual User? CreatedBy { get; private set; }
+    public virtual User? CreatedBy { get; init; }
     
-    public virtual User? ModifiedBy { get; private set; }
+    public virtual User? ModifiedBy { get; init; }
 }

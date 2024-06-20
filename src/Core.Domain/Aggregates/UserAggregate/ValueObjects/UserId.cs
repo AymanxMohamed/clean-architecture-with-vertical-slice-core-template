@@ -13,7 +13,7 @@ public class UserId : ValueObject
         Value = value;
     }
 
-    public Guid Value { get; protected set; }
+    public Guid Value { get; init; }
 
     public static UserId CreateUnique() => new(Guid.NewGuid());
 

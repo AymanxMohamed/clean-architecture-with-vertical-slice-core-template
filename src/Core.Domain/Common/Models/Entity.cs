@@ -15,8 +15,7 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
     {
     }
 
-    [JsonProperty("id")]
-    public TId Id { get; }
+    public TId Id { get; init; }
 
     public static bool operator ==(Entity<TId> left, Entity<TId> right) => Equals(left, right);
 

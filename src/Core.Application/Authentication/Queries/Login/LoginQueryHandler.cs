@@ -11,7 +11,7 @@ using Core.Domain.Common.Services;
 namespace Core.Application.Authentication.Queries.Login;
 
 public class LoginQueryHandler(
-    IGenericRepository<User, UserId> userGenericRepository,
+    ICachedGenericRepository<User, UserId> userGenericRepository,
     IPasswordHasher passwordHasher,
     IJwtTokenGenerator jwtTokenGenerator) : IQueryHandler<LoginQuery, AuthenticationResult>
 {

@@ -13,7 +13,7 @@ namespace Core.Application.Authentication.Commands.Register;
 public class RegisterCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator, 
     IPasswordHasher passwordHasher, 
-    IGenericRepository<User, UserId> userGenericRepository) : ICommandHandler<RegisterCommand, AuthenticationResult>
+    ICachedGenericRepository<User, UserId> userGenericRepository) : ICommandHandler<RegisterCommand, AuthenticationResult>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {

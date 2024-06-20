@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 
 using Core.Application.Common.Persistence;
-using Core.Application.Common.Services;
 using Core.Infrastructure.Persistence.Common.Extensions;
 using Core.Infrastructure.Persistence.Common.Repositories;
 using Core.Infrastructure.Persistence.Common.Services;
 using Core.Infrastructure.Persistence.Common.Settings;
-using Core.Infrastructure.Persistence.Health;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +46,7 @@ public static class DependencyInjection
     private static IServiceCollection AddGenericRepositoryWithSpecification(this IServiceCollection services)
     {
         services.AddScoped(
-            serviceType: typeof(IGenericRepository<,>),  
+            serviceType: typeof(IGenericRepository<,>), 
             implementationType: typeof(GenericRepository<,>));
         
         services.AddScoped(

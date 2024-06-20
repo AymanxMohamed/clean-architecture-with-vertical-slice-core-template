@@ -11,10 +11,12 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
+using Newtonsoft.Json;
+
 namespace Core.Presentation.Users;
 
 public class UsersController(ISender sender, IMapper mapper, 
-    ICachedGenericRepository<User, UserId> cachedGenericRepository,
+    IGenericRepository<User, UserId> cachedGenericRepository,
     IGenericRepository<User, UserId> genericRepository,
     ICachingService cachingService) : 
     ApiController(sender, mapper)
