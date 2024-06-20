@@ -7,29 +7,44 @@ public interface IGenericRepository<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
     where TEntityId : notnull
 {
-    Task<int> CountAllAsync();
+    Task<int> CountAllAsync(CancellationToken cancellationToken = default);
     
-    Task<int> CountAsync(ISpecification<TEntity, TEntityId> specification, bool countAllExcludingPagination = false);
+    Task<int> CountAsync(
+        ISpecification<TEntity, TEntityId> specification, 
+        bool countAllExcludingPagination = false, 
+        CancellationToken cancellationToken = default);
     
-    Task<PaginationResult<TEntity, TEntityId>> GetPaginationAsync(ISpecification<TEntity, TEntityId> specification);
+    Task<PaginationResult<TEntity, TEntityId>> GetPaginationAsync(
+        ISpecification<TEntity, TEntityId> specification, 
+        CancellationToken cancellationToken = default);
     
-    Task<List<TEntity>> GetAsync(ISpecification<TEntity, TEntityId> specification);
+    Task<List<TEntity>> GetAsync(
+        ISpecification<TEntity, TEntityId> specification, 
+        CancellationToken cancellationToken = default);
     
-    Task<List<TEntity>> GetReadyOnlyAsync(ISpecification<TEntity, TEntityId> specification);
+    Task<List<TEntity>> GetReadyOnlyAsync(
+        ISpecification<TEntity, TEntityId> specification, 
+        CancellationToken cancellationToken = default);
     
-    Task<TEntity?> GetFirstOrDefault(ISpecification<TEntity, TEntityId> specification);
+    Task<TEntity?> GetFirstOrDefault(
+        ISpecification<TEntity, TEntityId> specification, 
+        CancellationToken cancellationToken = default);
     
-    Task<TEntity?> GetFirstOrDefaultReadyOnly(ISpecification<TEntity, TEntityId> specification);
+    Task<TEntity?> GetFirstOrDefaultReadyOnly(
+        ISpecification<TEntity, TEntityId> specification, 
+        CancellationToken cancellationToken = default);
     
-    Task<bool> CheckExistAsync(ISpecification<TEntity, TEntityId> specification);
+    Task<bool> CheckExistAsync(
+        ISpecification<TEntity, TEntityId> specification, 
+        CancellationToken cancellationToken = default);
     
-    Task<bool> CheckExistByIdAsync(TEntityId id);
+    Task<bool> CheckExistByIdAsync(TEntityId id, CancellationToken cancellationToken = default);
     
-    Task<TEntity?> GetByIdAsync(TEntityId id);
+    Task<TEntity?> GetByIdAsync(TEntityId id, CancellationToken cancellationToken = default);
     
-    Task<List<TEntity>> ListAllAsync();
+    Task<List<TEntity>> ListAllAsync(CancellationToken cancellationToken = default);
     
-    Task<TEntity> AddAsync(TEntity entity);
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     
     void Update(TEntity entity);
     

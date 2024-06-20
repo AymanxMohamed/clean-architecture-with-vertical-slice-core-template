@@ -31,79 +31,91 @@ public class GenericRepository<TEntity, TEntityId> : IGenericRepository<TEntity,
         return query;
     }
 
-    public async Task<int> CountAllAsync()
+    public async Task<int> CountAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<TEntity>().CountAsync();
+        return await _dbContext.Set<TEntity>().CountAsync(cancellationToken);
     }
 
     public async Task<int> CountAsync(
         ISpecification<TEntity, TEntityId> specification, 
-        bool countAllExcludingPagination = false)
+        bool countAllExcludingPagination = false,
+        CancellationToken cancellationToken = default)
     {
         if (countAllExcludingPagination)
         {
             specification.IsPagingEnabled = false;
         }
         
-        return await ApplySpecification(specification).CountAsync();
+        return await ApplySpecification(specification).CountAsync(cancellationToken);
     }
 
-    public async Task<List<TEntity>> GetAsync(ISpecification<TEntity, TEntityId> specification)
+    public async Task<List<TEntity>> GetAsync(
+        ISpecification<TEntity, TEntityId> specification,
+        CancellationToken cancellationToken = default)
     {
-        var items = await ApplySpecification(specification).ToListAsync();
+        var items = await ApplySpecification(specification).ToListAsync(cancellationToken);
         return items;
     }
 
-    public async Task<List<TEntity>> GetReadyOnlyAsync(ISpecification<TEntity, TEntityId> specification)
+    public async Task<List<TEntity>> GetReadyOnlyAsync(
+        ISpecification<TEntity, TEntityId> specification,
+        CancellationToken cancellationToken = default)
     {
-        var items = await ApplySpecificationReadOnly(specification).ToListAsync();
+        var items = await ApplySpecificationReadOnly(specification).ToListAsync(cancellationToken);
         return items;
     }
 
     public async Task<PaginationResult<TEntity, TEntityId>> GetPaginationAsync(
-        ISpecification<TEntity, TEntityId> specification)
+        ISpecification<TEntity, TEntityId> specification,
+        CancellationToken cancellationToken = default)
     {
-        var entities = await ApplySpecificationReadOnly(specification).ToListAsync();
+        var entities = await ApplySpecificationReadOnly(specification).ToListAsync(cancellationToken);
         
         return new PaginationResult<TEntity, TEntityId>(
             items: entities, 
-            totalCount: await CountAsync(specification, countAllExcludingPagination: true), 
+            totalCount: await CountAsync(specification, countAllExcludingPagination: true, cancellationToken), 
             filter: specification.ResourceParameter); 
     }
 
-    public async Task<TEntity?> GetFirstOrDefault(ISpecification<TEntity, TEntityId> specification) 
+    public async Task<TEntity?> GetFirstOrDefault(
+        ISpecification<TEntity, TEntityId> specification,
+        CancellationToken cancellationToken = default) 
     {
-        return await ApplySpecification(specification).FirstOrDefaultAsync();
+        return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<TEntity?> GetFirstOrDefaultReadyOnly(ISpecification<TEntity, TEntityId> specification)
+    public async Task<TEntity?> GetFirstOrDefaultReadyOnly(
+        ISpecification<TEntity, TEntityId> specification,
+        CancellationToken cancellationToken = default)
     {
-        return await ApplySpecificationReadOnly(specification).FirstOrDefaultAsync();
+        return await ApplySpecificationReadOnly(specification).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<bool> CheckExistAsync(ISpecification<TEntity, TEntityId> specification)
+    public async Task<bool> CheckExistAsync(
+        ISpecification<TEntity, TEntityId> specification,
+        CancellationToken cancellationToken = default)
     {
-        return await ApplySpecification(specification).AnyAsync();
+        return await ApplySpecification(specification).AnyAsync(cancellationToken);
     }
 
-    public async Task<bool> CheckExistByIdAsync(TEntityId id)
+    public async Task<bool> CheckExistByIdAsync(TEntityId id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<TEntity>().AnyAsync(x => x.Id.Equals(id));
+        return await _dbContext.Set<TEntity>().AnyAsync(x => x.Id.Equals(id), cancellationToken);
     }
 
-    public virtual async Task<TEntity?> GetByIdAsync(TEntityId id)
+    public virtual async Task<TEntity?> GetByIdAsync(TEntityId id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<TEntity>().FindAsync(id);
+        return await _dbContext.Set<TEntity>().FindAsync([id, cancellationToken], cancellationToken: cancellationToken);
     }
 
-    public async Task<List<TEntity>> ListAllAsync()
+    public async Task<List<TEntity>> ListAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<TEntity>().ToListAsync();
+        return await _dbContext.Set<TEntity>().ToListAsync(cancellationToken);
     }
 
-    public async Task<TEntity> AddAsync(TEntity entity)
+    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Set<TEntity>().AddAsync(entity);
+        await _dbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
         return entity;
     }
 

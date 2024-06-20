@@ -7,6 +7,7 @@ using Core.Domain.Common.Services;
 using Core.Infrastructure.Authentication.PasswordHasher;
 using Core.Infrastructure.Authentication.TokenGenerator;
 using Core.Infrastructure.Common.Services;
+using Core.Infrastructure.Common.Services.Caching;
 using Core.Infrastructure.Common.Services.Email;
 using Core.Infrastructure.Services;
 
@@ -26,7 +27,8 @@ public static class DependencyInjection
             .AddCommonServices()
             .AddAuth(configuration)
             .AddUserContext()
-            .AddEmailServices(configuration);
+            .AddEmailServices(configuration)
+            .AddCaching();
     }
 
     private static IServiceCollection AddCommonServices(this IServiceCollection services)
@@ -72,5 +74,12 @@ public static class DependencyInjection
         return services
             .AddSingleton(emailServiceOptions)
             .AddScoped<IEmailService, EmailService>();
+    }
+
+    private static IServiceCollection AddCaching(this IServiceCollection services)
+    {
+         services.AddDistributedMemoryCache();
+         services.AddSingleton<ICachingService, CachingService>();
+         return services;
     }
 }

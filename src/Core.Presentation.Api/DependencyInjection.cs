@@ -7,8 +7,6 @@ using Core.Infrastructure;
 using Core.Infrastructure.Persistence;
 using Core.Presentation.Api.Common.OpenApi;
 
-using Microsoft.OpenApi.Models;
-
 namespace Core.Presentation.Api;
 
 public static class DependencyInjection

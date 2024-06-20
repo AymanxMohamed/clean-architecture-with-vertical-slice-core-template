@@ -16,6 +16,7 @@ public static class MiddlewarePipeline
     {
         app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
         app.UseExceptionHandler(CoreEndpoints.GlobalErrorHandlingEndPoint);
+
         app.UseMiddleware<EventualConsistencyMiddleware>();
         
         app.UseHsts();
