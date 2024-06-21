@@ -41,9 +41,9 @@ services:
     networks:
       - sampleproject-network
 
-  projectname.seq:
+  core.seq:
     image: datalust/seq:latest
-    container_name: projectname-seq
+    container_name: core-seq
     environment:
       - ACCEPT_EULA=Y
     ports:
@@ -52,13 +52,13 @@ services:
     networks:
       - sampleproject-network
         
-  projectname.elastic.search:
+  core.elastic.search:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.0
-    container_name: projectname.elastic.search
+    container_name: core.elastic.search
     environment:
-      - node.name=projectname.elastic.search
-      - cluster.name=projectname.elastic.search.cluster
-      - cluster.initial_master_nodes=projectname.elastic.search
+      - node.name=core.elastic.search
+      - cluster.name=core.elastic.search.cluster
+      - cluster.initial_master_nodes=core.elastic.search
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -72,22 +72,22 @@ services:
     networks:
      - sampleproject-network
   
-  projectname.kibana:
+  core.kibana:
     image: docker.elastic.co/kibana/kibana:7.9.0
-    container_name: projectname.kibana
+    container_name: core.kibana
     ports:
       - "5601:5601"
     environment:
-      ELASTICSEARCH_URL: http://projectname.elastic.search:9200
-      ELASTICSEARCH_HOSTS: http://projectname.elastic.search:9200
+      ELASTICSEARCH_URL: http://core.elastic.search:9200
+      ELASTICSEARCH_HOSTS: http://core.elastic.search:9200
     depends_on:
-      - projectname.elastic.search
+      - core.elastic.search
     networks:
       - sampleproject-network
       
-  projectname.redis:
+  core.redis:
     image: redis:latest
-    container_name: projectname.redis
+    container_name: core.redis
     ports:
       - "6379:6379"
     networks:
@@ -110,8 +110,8 @@ services:
     networks:
       - sampleproject-network
 
-  projectname.presentation.api:
-    image: ${DOCKER_REGISTRY-}projectnamepresentationapi
+  core.presentation.api:
+    image: ${DOCKER_REGISTRY-}corepresentationapi
     build:
       context: .
       dockerfile: src/ProjectName.Presentation.Api/Dockerfile
@@ -120,9 +120,9 @@ services:
     depends_on:
       - sql-server-db
       - postgres-db
-      - projectname.seq
-      - projectname.elastic.search
-      - projectname.redis
+      - core.seq
+      - core.elastic.search
+      - core.redis
       - rabbitmq
     networks:
       - sampleproject-network
