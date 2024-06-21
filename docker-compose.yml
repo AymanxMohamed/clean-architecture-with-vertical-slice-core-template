@@ -84,6 +84,17 @@ services:
       - core.elastic.search
     networks:
       - sampleproject-network
+      
+  core.redis:
+    image: redis:latest
+    container_name: core.redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sampleproject-network
+    volumes:
+      - redis-data:/data
+    restart: always
   
   core.presentation.api:
     image: ${DOCKER_REGISTRY-}corepresentationapi
@@ -97,6 +108,7 @@ services:
       - postgres-db
       - core.seq
       - core.elastic.search
+      - core.redis
     networks:
       - sampleproject-network
 
@@ -106,6 +118,8 @@ volumes:
   sql-data:
     driver: local
   elastic-search-data:
+    driver: local
+  redis-data:
     driver: local
 
 networks:

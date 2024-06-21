@@ -28,7 +28,7 @@ public static class DependencyInjection
             .AddAuth(configuration)
             .AddUserContext()
             .AddEmailServices(configuration)
-            .AddCaching();
+            .AddCaching(configuration);
     }
 
     private static IServiceCollection AddCommonServices(this IServiceCollection services)
@@ -76,10 +76,27 @@ public static class DependencyInjection
             .AddScoped<IEmailService, EmailService>();
     }
 
-    private static IServiceCollection AddCaching(this IServiceCollection services)
+    private static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
     {
-         services.AddDistributedMemoryCache();
-         services.AddSingleton<ICachingService, CachingService>();
-         return services;
+        var cachingSettings = configuration
+                                  .GetSection(CachingSettings.SectionName)
+                                  .Get<CachingSettings>() ?? new CachingSettings();
+
+        if (cachingSettings is { RedisCacheEnabled: true })
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = cachingSettings.RedisServerUrl;
+            });
+        }
+        else
+        {
+            services.AddDistributedMemoryCache();
+        }
+        
+        services.AddSingleton(cachingSettings);
+        services.AddSingleton<ICachingService, CachingService>();
+
+        return services;
     }
 }

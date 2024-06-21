@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 
 using Core.Application.Common.Services;
+using Core.Infrastructure.Common.Services.Serialization.Resolvers;
 
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -8,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Core.Infrastructure.Common.Services.Caching;
 
-public class CachingService(IDistributedCache distributedCache) : ICachingService
+public class CachingService(IDistributedCache distributedCache, CachingSettings cachingSettings) : ICachingService
 {
     private const string CacheKeysKey = "CacheKeys";
     
@@ -16,10 +17,17 @@ public class CachingService(IDistributedCache distributedCache) : ICachingServic
         where T : class
     {
         var cachedValue = await distributedCache.GetStringAsync(key, cancellationToken);
-        return cachedValue is null ? null : JsonConvert.DeserializeObject<T>(cachedValue);
+        return cachedValue is null ? null : JsonConvert.DeserializeObject<T>(cachedValue, new JsonSerializerSettings
+        {
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+            ContractResolver = new PrivateResolver()
+        });
     }
 
-    public async Task<T?> GetOrCreateAsync<T>(string key, Func<Task<T?>> factory, CancellationToken cancellationToken = default) 
+    public async Task<T?> GetOrCreateAsync<T>(
+        string key, 
+        Func<Task<T?>> factory, 
+        CancellationToken cancellationToken = default) 
         where T : class
     {
         var cachedValue = await GetAsync<T>(key, cancellationToken);
@@ -40,13 +48,7 @@ public class CachingService(IDistributedCache distributedCache) : ICachingServic
 
         return cachedValue;
     }
-
-    public Task<T?> GetOrCreateAsync<T>(string key, Func<Task<T?>> factory, CancellationToken cancellationToken = default) 
-        where T : struct
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default) 
         where T : class
     {
@@ -55,7 +57,7 @@ public class CachingService(IDistributedCache distributedCache) : ICachingServic
             value: JsonConvert.SerializeObject(value), 
             options: new DistributedCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(cachingSettings.DefaultCacheExpiringTimeInMinutes)
             }, 
             token: cancellationToken);
 
@@ -75,6 +77,7 @@ public class CachingService(IDistributedCache distributedCache) : ICachingServic
 
     public async Task RemoveByPrefixAsync(string keyPrefix, CancellationToken cancellationToken = default)
     {
+        // todo: implement better way for this method
         var removeKeysTasks = (await GetCacheKeys(cancellationToken))
             .Keys
             .Where(key => key.StartsWith(keyPrefix))

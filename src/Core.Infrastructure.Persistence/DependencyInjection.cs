@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 
 using Core.Application.Common.Persistence;
+using Core.Infrastructure.Common.Services.Caching;
 using Core.Infrastructure.Persistence.Common.Extensions;
 using Core.Infrastructure.Persistence.Common.Repositories;
 using Core.Infrastructure.Persistence.Common.Services;
@@ -8,7 +9,6 @@ using Core.Infrastructure.Persistence.Common.Settings;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Core.Infrastructure.Persistence;
 
@@ -40,7 +40,7 @@ public static class DependencyInjection
             builder.ConfigureFromDatabaseConfigurations(databaseConfigurations);
         });
 
-        return services.AddHealthChecksSupport(databaseConfigurations);
+        return services.AddHealthChecksSupport(configuration, databaseConfigurations);
     }
 
     private static IServiceCollection AddGenericRepositoryWithSpecification(this IServiceCollection services)
@@ -60,6 +60,7 @@ public static class DependencyInjection
     
     private static IServiceCollection AddHealthChecksSupport(
         this IServiceCollection services, 
+        IConfiguration configuration,
         DatabaseConfigurations databaseConfigurations)
     {
         var healthCheckBuilder = services.AddHealthChecks();
@@ -73,7 +74,12 @@ public static class DependencyInjection
             healthCheckBuilder.AddNpgSql(databaseConfigurations.ConnectionString);
         }
 
-        healthCheckBuilder.AddRedis("Redis Connection string", failureStatus: HealthStatus.Degraded);
+        var cachingSettings = configuration.GetSection(key: CachingSettings.SectionName).Get<CachingSettings>();
+
+        if (cachingSettings is { RedisCacheEnabled: true })
+        {
+            healthCheckBuilder.AddRedis(cachingSettings.RedisServerUrl);
+        }
         
         return services;
     }

@@ -29,11 +29,11 @@ public class User : AuditableEntity<UserId>
         AddDomainEvent(new UserCreatedDomainEvent(Id));
     }
 
-    public string FirstName { get; init; }
+    public string FirstName { get; private set; }
 
-    public string LastName { get; init; }
+    public string LastName { get; private set; }
 
-    public string Email { get; init; }
+    public string Email { get; private set; }
 
     public static User Create(
         string firstName,

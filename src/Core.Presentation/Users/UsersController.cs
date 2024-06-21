@@ -17,8 +17,7 @@ namespace Core.Presentation.Users;
 
 public class UsersController(ISender sender, IMapper mapper, 
     IGenericRepository<User, UserId> cachedGenericRepository,
-    IGenericRepository<User, UserId> genericRepository,
-    ICachingService cachingService) : 
+    IGenericRepository<User, UserId> genericRepository) : 
     ApiController(sender, mapper)
 {
     [HttpGet]
@@ -28,8 +27,6 @@ public class UsersController(ISender sender, IMapper mapper,
         {
             return await genericRepository.ListAllAsync(cancellationToken);
         }
-        
-        var cachedKeys = await cachingService.GetCacheKeys(cancellationToken);
         
         return await cachedGenericRepository.ListAllAsync(cancellationToken);
     }
