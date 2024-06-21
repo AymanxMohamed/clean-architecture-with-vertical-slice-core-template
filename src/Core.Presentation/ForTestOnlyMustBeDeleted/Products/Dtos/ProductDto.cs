@@ -1,4 +1,4 @@
-﻿namespace Core.Presentation.Products.Dtos;
+﻿namespace Core.Presentation.ForTestOnlyMustBeDeleted.Products.Dtos;
 
 public class ProductDto
 {

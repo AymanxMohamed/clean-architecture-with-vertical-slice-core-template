@@ -1,6 +1,6 @@
 ﻿using Core.Application.Common.Services;
 using Core.Presentation.Common.Controllers;
-using Core.Presentation.Products.Dtos;
+using Core.Presentation.ForTestOnlyMustBeDeleted.Products.Dtos;
 
 using MapsterMapper;
 
@@ -8,7 +8,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.Presentation.Products.Controllers;
+namespace Core.Presentation.ForTestOnlyMustBeDeleted.Products.Controllers;
 
 /// <summary>
 /// This Controller is for testing purposes only.

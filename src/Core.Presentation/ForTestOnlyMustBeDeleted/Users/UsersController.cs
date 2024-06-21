@@ -10,7 +10,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.Presentation.Users;
+namespace Core.Presentation.ForTestOnlyMustBeDeleted.Users;
 
 /// <summary>
 /// This Controller is for testing purposes only.
