@@ -5,28 +5,28 @@
 - [Getting Started](#getting-started)
 - [Overview](#overview)
 - [Packages](#packages)
-  - [MediatR](#mediatr)
-  - [Fluent Validation](#fluentvalidation)
-  - [Fluent Assertion](#fluentassertions)
-  - [Mapster](#mapster)
-  - [ErrorOr](#erroror)
+    - [MediatR](#mediatr)
+    - [Fluent Validation](#fluentvalidation)
+    - [Fluent Assertion](#fluentassertions)
+    - [Mapster](#mapster)
+    - [ErrorOr](#erroror)
 - [Folder Structure](#folder-structure)
 - [Features](#features)
-  - [Application Layer](#application-layer)
-  - [Infrastructure Layer](#infrastructure-layer)
-  - [Presentation Layer](#presentation-layer)
-  - [Additional Service](#additional-services)
-  - [Notes](#notes)
+    - [Application Layer](#application-layer)
+    - [Infrastructure Layer](#infrastructure-layer)
+    - [Presentation Layer](#presentation-layer)
+    - [Additional Service](#additional-services)
+    - [Notes](#notes)
 - [Cross Cutting Concerns](#cross-cutting-concerns)
-  - [Logging](#Logging)
-  - [Caching](#caching)
-    - [Caching Service](#caching-service)
-    - [Generic Cached Repository](#generic-cached-repository)
-  - [Api Versioning](#api-versioning)
-  - [Health Checks](#health-checks)
-  - [Messaging](#messaging)
-    - [Domain Events](#domain-events)
-    - [Integration Events](#integration-events)
+    - [Logging](#Logging)
+    - [Caching](#caching)
+        - [Caching Service](#caching-service)
+        - [Generic Cached Repository](#generic-cached-repository)
+    - [Api Versioning](#api-versioning)
+    - [Health Checks](#health-checks)
+    - [Messaging](#messaging)
+        - [Domain Events](#domain-events)
+        - [Integration Events](#integration-events)
 
 ## Getting Started
 
@@ -204,9 +204,9 @@ public interface ICachedGenericRepository<TEntity, TEntityId> : IGenericReposito
 
 In Order to use messages you have to follow these steps
 
-- **Define Domain Event**: Declare the domain event you want to publish Domain Events is used within 
-the same bounded context (Microservice) only and is 
-declared inside the Events folder for the specific aggregate that the event will happen inside
+- **Define Domain Event**: Declare the domain event you want to publish Domain Events is used within
+  the same bounded context (Microservice) only and is
+  declared inside the Events folder for the specific aggregate that the event will happen inside
 
 ```csharp
 namespace Core.Domain.Aggregates.UserAggregate.Events;
@@ -251,8 +251,8 @@ public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDoma
 
 #### Integration Events
 
-- **Define the Message**: Declare the message in the shared Kernel as IIntegrationEvent 
-object in a folder with the name of the Application that will publish the message
+- **Define the Message**: Declare the message in the shared Kernel as IIntegrationEvent
+  object in a folder with the name of the Application that will publish the message
 
 ```csharp
 namespace SharedKernel.IntegrationEvents.UserManagement;
@@ -268,8 +268,8 @@ public interface IIntegrationEvent : INotification;
 ```
 
 - **Create New Integration Event Writer**: Add new Integration Event Writer Class inside the integration events folder
-inside the Infrastructure.Integrations Assembly you will have to only implement the GenerateIntegrationEvent method
-that is responsible for converting the Domain event to integration event
+  inside the Infrastructure.Integrations Assembly you will have to only implement the GenerateIntegrationEvent method
+  that is responsible for converting the Domain event to integration event
 
 ```csharp
 namespace Core.Infrastructure.Integrations.IntegrationEvents;

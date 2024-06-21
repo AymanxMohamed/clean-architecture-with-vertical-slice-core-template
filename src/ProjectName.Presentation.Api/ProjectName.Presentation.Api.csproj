@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>387b768d-c183-4c39-9e81-e8c60b1e348c</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Ui.Client" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="Serilog" Version="4.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.0" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectName.Domain\ProjectName.Domain.csproj" />
+    <ProjectReference Include="..\ProjectName.Application\ProjectName.Application.csproj" />
+    <ProjectReference Include="..\ProjectName.Infrastructure.Integrations\ProjectName.Infrastructure.Integrations.csproj" />
+    <ProjectReference Include="..\ProjectName.Infrastructure.Persistence.Postgres\ProjectName.Infrastructure.Persistence.Postgres.csproj" />
+    <ProjectReference Include="..\ProjectName.Infrastructure.Persistence.SqlServer\ProjectName.Infrastructure.Persistence.SqlServer.csproj" />
+    <ProjectReference Include="..\ProjectName.Presentation\ProjectName.Presentation.csproj" />
+    <ProjectReference Include="..\ProjectName.Infrastructure\ProjectName.Infrastructure.csproj" />
+    <ProjectReference Include="..\ProjectName.Infrastructure.Persistence\ProjectName.Infrastructure.Persistence.csproj" />
+  </ItemGroup>
+</Project>

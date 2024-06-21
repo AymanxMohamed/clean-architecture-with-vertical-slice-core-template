@@ -11,7 +11,7 @@ indent_size = 2
 # C# files
 [*.cs]
 
-#### Core EditorConfig Options ####
+#### ProjectName EditorConfig Options ####
 
 # Indentation and spacing
 indent_size = 4
@@ -384,10 +384,13 @@ dotnet_diagnostic.SA1101.severity = none
 # SA1204: Static elements should appear before instance elements
 dotnet_diagnostic.SA1204.severity = none
 
-# SA1308: Field 's_efCoreConfigurationsAssembly' should not begin with the prefix 's_'
+# SA1210: Using Directives should be ordered alphabetically
+dotnet_diagnostic.SA1210.severity = none
+
+# SA1308: Field 's_efProjectNameConfigurationsAssembly' should not begin with the prefix 's_'
 dotnet_diagnostic.SA1308.severity = none
 
-# SA1309: A Field should not begin with underscore
+# SA1309: A Field should not begin with undersprojectname
 dotnet_diagnostic.SA1309.severity = none
 
 # SA1401: Field should be private
@@ -410,6 +413,7 @@ dotnet_diagnostic.SA1602.severity = none
 
 # SA1633: File Should have headeer
 dotnet_diagnostic.SA1633.severity = none
+
 
 
 

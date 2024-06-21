@@ -4,7 +4,7 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "core.presentation.api": "StartDebugging"
+        "projectname.presentation.api": "StartDebugging"
       }
     }
   }
