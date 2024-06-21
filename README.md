@@ -33,7 +33,7 @@
 - Install the template using
 
 ```sh
- dotnet new --install .
+ dotnet new install .
 ```
 
 - Create a new project with the template
