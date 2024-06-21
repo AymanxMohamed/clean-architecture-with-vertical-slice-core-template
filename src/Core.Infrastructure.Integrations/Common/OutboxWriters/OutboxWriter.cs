@@ -1,6 +1,6 @@
-﻿using Core.Infrastructure.Persistence;
+﻿using System.Text.Json;
 
-using Newtonsoft.Json;
+using Core.Infrastructure.Persistence;
 
 using SharedKernel.IntegrationEvents;
 
@@ -12,7 +12,7 @@ public class OutboxWriter(ApplicationDbContext dbContext) : IOutboxWriter
     {
         await dbContext.OutboxIntegrationEvents.AddAsync(new OutboxIntegrationEvent(
             EventName: integrationEvent.GetType().Name,
-            EventContent: JsonConvert.SerializeObject(integrationEvent)));
+            EventContent: JsonSerializer.Serialize(integrationEvent)));
 
         await dbContext.SaveChangesAsync();
     }

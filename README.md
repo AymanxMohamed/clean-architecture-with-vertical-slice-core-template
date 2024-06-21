@@ -260,6 +260,13 @@ namespace SharedKernel.IntegrationEvents.UserManagement;
 public record UserCreatedIntegrationEvent(Guid UserId) : IIntegrationEvent;
 ```
 
+- **Add Json Derived Type**: Add the json Derived Type attribute to the IIntegration Event to help with the serialization
+
+```csharp
+[JsonDerivedType(typeof(UserCreatedIntegrationEvent), typeDiscriminator: nameof(UserCreatedIntegrationEvent))]
+public interface IIntegrationEvent : INotification;
+```
+
 - **Create New Integration Event Writer**: Add new Integration Event Writer Class inside the integration events folder
 inside the Infrastructure.Integrations Assembly you will have to only implement the GenerateIntegrationEvent method
 that is responsible for converting the Domain event to integration event
