@@ -9,6 +9,9 @@ using Core.Infrastructure.Persistence.Common.Settings;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+using RabbitMQ.Client;
 
 namespace Core.Infrastructure.Persistence;
 
@@ -64,7 +67,19 @@ public static class DependencyInjection
         DatabaseConfigurations databaseConfigurations)
     {
         var healthCheckBuilder = services.AddHealthChecks();
-
+        
+        healthCheckBuilder
+            .AddDatabaseHealthChecks(databaseConfigurations)
+            .AddRedisHealthChecks(configuration)
+            .AddRabbitMqHealthChecks(configuration);
+  
+        return services;
+    }
+    
+    private static IHealthChecksBuilder AddDatabaseHealthChecks(
+        this IHealthChecksBuilder healthCheckBuilder, 
+        DatabaseConfigurations databaseConfigurations)
+    {
         if (databaseConfigurations.SqlServerEnabled)
         {
             healthCheckBuilder.AddSqlServer(databaseConfigurations.ConnectionString);
@@ -73,14 +88,47 @@ public static class DependencyInjection
         {
             healthCheckBuilder.AddNpgSql(databaseConfigurations.ConnectionString);
         }
-
+        
+        return healthCheckBuilder;
+    }
+    
+    private static IHealthChecksBuilder AddRedisHealthChecks(
+        this IHealthChecksBuilder healthCheckBuilder, 
+        IConfiguration configuration)
+    {
         var cachingSettings = configuration.GetSection(key: CachingSettings.SectionName).Get<CachingSettings>();
 
         if (cachingSettings is { RedisCacheEnabled: true })
         {
             healthCheckBuilder.AddRedis(cachingSettings.RedisServerUrl);
         }
+
+        return healthCheckBuilder;
+    }
+
+    private static IHealthChecksBuilder AddRabbitMqHealthChecks(
+        this IHealthChecksBuilder healthCheckBuilder, 
+        IConfiguration configuration)
+    {
+        var messageBrokerSettings = configuration.GetSection(
+                key: MessageBrokerSettings.Section)
+            .Get<MessageBrokerSettings>() ?? new MessageBrokerSettings();
         
-        return services;
+        IConnection connection = new ConnectionFactory
+        {
+            HostName = messageBrokerSettings.HostName,
+            Port = messageBrokerSettings.Port,
+            UserName = messageBrokerSettings.UserName,
+            Password = messageBrokerSettings.Password
+        }.CreateConnection();
+
+        healthCheckBuilder.AddRabbitMQ(
+            setup: options =>
+            {
+                options.Connection = connection;
+            }, 
+            failureStatus: HealthStatus.Degraded);
+
+        return healthCheckBuilder;
     }
 }

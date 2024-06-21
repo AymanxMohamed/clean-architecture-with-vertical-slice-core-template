@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
     <ProjectReference Include="..\Core.Application\Core.Application.csproj" />
+    <ProjectReference Include="..\Core.Infrastructure.Integrations\Core.Infrastructure.Integrations.csproj" />
     <ProjectReference Include="..\Core.Infrastructure.Persistence.Postgres\Core.Infrastructure.Persistence.Postgres.csproj" />
     <ProjectReference Include="..\Core.Infrastructure.Persistence.SqlServer\Core.Infrastructure.Persistence.SqlServer.csproj" />
     <ProjectReference Include="..\Core.Presentation\Core.Presentation.csproj" />

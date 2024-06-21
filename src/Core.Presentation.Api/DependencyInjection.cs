@@ -4,6 +4,7 @@ using Asp.Versioning;
 
 using Core.Application;
 using Core.Infrastructure;
+using Core.Infrastructure.Integrations;
 using Core.Infrastructure.Persistence;
 using Core.Presentation.Api.Common.OpenApi;
 
@@ -16,7 +17,7 @@ public static class DependencyInjection
         return services
                 .AddCoreApiModule(
                     configuration,
-                    mediatorServicesAssembly: CoreApplicationAssemblyMarker.Assembly,
+                    mediatorServicesAssemblies: [CoreApplicationAssemblyMarker.Assembly, CoreInfrastructureIntegrationsAssemblyMarker.Assembly],
                     controllersAssembly: CorePresentationAssemblyMarker.Assembly,
                     efCoreConfigurationsAssembly: CoreInfrastructurePersistenceAssemblyMarker.Assembly);
     }
@@ -24,16 +25,17 @@ public static class DependencyInjection
     public static IServiceCollection AddCoreApiModule(
         this IServiceCollection services,
         IConfiguration configuration,
-        Assembly mediatorServicesAssembly,
+        List<Assembly> mediatorServicesAssemblies,
         Assembly controllersAssembly,
         Assembly efCoreConfigurationsAssembly,
         Assembly? mappingAssembly = null,
-        Assembly? fluentValidatorsAssembly = null)
+        List<Assembly>? fluentValidatorsAssemblies = null)
     {
         return services
-            .AddCoreApplication(mediatorServicesAssembly, fluentValidatorsAssembly)
+            .AddCoreApplication(mediatorServicesAssemblies, fluentValidatorsAssemblies)
             .AddCoreInfrastructure(configuration)
             .AddCoreInfrastructurePersistence(configuration, efCoreConfigurationsAssembly)
+            .AddCoreInfrastructureIntegrations(configuration)
             .AddCoreApiPresentation(controllersAssembly, mappingAssembly)
             .AddCoreThirdParties();
     }

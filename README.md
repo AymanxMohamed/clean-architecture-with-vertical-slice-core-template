@@ -24,6 +24,7 @@
     - [Generic Cached Repository](#generic-cached-repository)
   - [Api Versioning](#api-versioning)
   - [Health Checks](#health-checks)
+  - [Messaging](#messaging)
 
 ## Getting Started
 
@@ -195,3 +196,100 @@ public interface ICachedGenericRepository<TEntity, TEntityId> : IGenericReposito
 
 ### Health Checks
 
+### Messaging
+
+#### Domain Events
+
+In Order to use messages you have to follow these steps
+
+- **Define Domain Event**: Declare the domain event you want to publish Domain Events is used within 
+the same bounded context (Microservice) only and is 
+declared inside the Events folder for the specific aggregate that the event will happen inside
+
+```csharp
+namespace Core.Domain.Aggregates.UserAggregate.Events;
+
+public record UserCreatedDomainEvent(UserId UserId) : IDomainEvent;
+```
+- **Raise The Domain Event within the aggregate**: Rasie the event using AddDomainEvent method
+
+```csharp
+    private User(
+        string firstName,
+        string lastName,
+        string email,
+        string passwordHash,
+        UserId? id = null)
+        : base(id ?? UserId.CreateUnique())
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        _passwordHash = passwordHash;
+        
+        AddDomainEvent(new UserCreatedDomainEvent(Id));
+    }
+```
+
+- **Handling the Domain Event**: Inside your ApplicationLayer.FeatureFolder create DomainEvents folder and Implement IDomainEventHandler
+
+```csharp
+namespace Core.Application.Test.DomainEvents;
+
+public class UserCreatedDomainEventHandler : IDomainEventHandler<UserCreatedDomainEvent>
+{
+    public async Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
+    {
+        Console.WriteLine("Domain Event Handler");
+        
+        await Task.CompletedTask;
+    }
+}
+```
+
+#### Integration Events
+
+- **Define the Message**: Declare the message in the shared Kernel as IIntegrationEvent 
+object in a folder with the name of the Application that will publish the message
+
+```csharp
+namespace SharedKernel.IntegrationEvents.UserManagement;
+
+public record UserCreatedIntegrationEvent(Guid UserId) : IIntegrationEvent;
+```
+
+- **Create New Integration Event Writer**: Add new Integration Event Writer Class inside the integration events folder
+inside the Infrastructure.Integrations Assembly you will have to only implement the GenerateIntegrationEvent method
+that is responsible for converting the Domain event to integration event
+
+```csharp
+namespace Core.Infrastructure.Integrations.IntegrationEvents;
+
+public class UserCreatedDomainIntegrationEventOutboxOutboxWriter(IOutboxWriter outboxWriter) 
+    : IntegrationEventOutboxWriter<UserCreatedDomainEvent, UserCreatedIntegrationEvent>(outboxWriter)
+{
+    protected override UserCreatedIntegrationEvent GenerateIntegrationEvent(UserCreatedDomainEvent domainEvent)
+    {
+        return new UserCreatedIntegrationEvent(domainEvent.UserId.Value);
+    }
+}
+```
+
+- **Handle The Integration Event**: Inside your ApplicationLayer.FeatureFolder create IntegrationEvents folder and Implement IIntegrationEventHandler
+
+```csharp
+namespace Core.Application.Test.IntegrationEvents;
+
+public class UserCreatedIntegrationEventHandler(ILogger<UserCreatedIntegrationEventHandler> logger) 
+    : IIntegrationEventHandler<UserCreatedIntegrationEvent>
+{
+    public async Task Handle(UserCreatedIntegrationEvent notification, CancellationToken cancellationToken)
+    {
+        logger.LogInformation(
+            message: "new user has been created and has been processed by the event handler {UserId}",
+            notification.UserId);
+        
+        await Task.CompletedTask;
+    }
+}
+```

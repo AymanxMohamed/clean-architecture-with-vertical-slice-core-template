@@ -5,11 +5,15 @@ using Core.Infrastructure.Persistence.Common.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
+using SharedKernel.IntegrationEvents;
+
 namespace Core.Infrastructure.Persistence;
 
 public class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : DbContext(options)
 {
+    public DbSet<OutboxIntegrationEvent> OutboxIntegrationEvents { get; set; } = null!;
+    
     public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         if (httpContextAccessor.HttpContext is null)

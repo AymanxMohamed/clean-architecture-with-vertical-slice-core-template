@@ -15,19 +15,20 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddCoreApplication(
         this IServiceCollection services, 
-        Assembly mediatorServicesAssembly,
-        Assembly? fluentValidatorsAssembly = null)
+        List<Assembly> mediatorAssemblies,
+        List<Assembly>? fluentValidatorsAssemblies = null)
     {
         return services
-            .AddMediatrWithCorePipelines(mediatorServicesAssembly)
-            .AddFluentValidationValidators(fluentValidatorsAssembly ?? mediatorServicesAssembly);
+            .AddMediatrWithCorePipelines(mediatorAssemblies)
+            .AddFluentValidationValidators(fluentValidatorsAssemblies ?? mediatorAssemblies);
     }
 
-    private static IServiceCollection AddMediatrWithCorePipelines(this IServiceCollection services, Assembly assembly)
+    private static IServiceCollection AddMediatrWithCorePipelines(this IServiceCollection services, List<Assembly> assemblies)
     {
+        assemblies.Add(CoreApplicationAssemblyMarker.Assembly);
         services.AddMediatR(configuration =>
         {
-            configuration.RegisterServicesFromAssemblies(CoreApplicationAssemblyMarker.Assembly, assembly);
+            configuration.RegisterServicesFromAssemblies(assemblies.ToArray());
             configuration.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
             configuration.AddOpenBehavior(typeof(ExceptionHandlingBehavior<,>));
             configuration.AddOpenBehavior(typeof(UnitOfWorkBehaviour<,>));
@@ -41,9 +42,10 @@ public static class DependencyInjection
 
     private static IServiceCollection AddFluentValidationValidators(
         this IServiceCollection services, 
-        Assembly validatorsAssembly)
+        ICollection<Assembly> validatorsAssemblies)
     {
-        return services
-            .AddValidatorsFromAssemblies(new[] { CoreApplicationAssemblyMarker.Assembly, validatorsAssembly });
+        validatorsAssemblies.Add(CoreApplicationAssemblyMarker.Assembly);
+        
+        return services.AddValidatorsFromAssemblies(validatorsAssemblies);
     }
 }

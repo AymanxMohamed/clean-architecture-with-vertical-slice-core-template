@@ -95,20 +95,35 @@ services:
     volumes:
       - redis-data:/data
     restart: always
-  
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: Ayman123@
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - sampleproject-network
+
   core.presentation.api:
     image: ${DOCKER_REGISTRY-}corepresentationapi
     build:
       context: .
       dockerfile: src/Core.Presentation.Api/Dockerfile
     ports:
-      - "8080:8080"
+      - "5000:8080"
     depends_on:
       - sql-server-db
       - postgres-db
       - core.seq
       - core.elastic.search
       - core.redis
+      - rabbitmq
     networks:
       - sampleproject-network
 
@@ -120,6 +135,8 @@ volumes:
   elastic-search-data:
     driver: local
   redis-data:
+    driver: local
+  rabbitmq_data:
     driver: local
 
 networks:
