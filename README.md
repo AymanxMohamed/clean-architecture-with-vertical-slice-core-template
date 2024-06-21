@@ -25,6 +25,8 @@
   - [Api Versioning](#api-versioning)
   - [Health Checks](#health-checks)
   - [Messaging](#messaging)
+    - [Domain Events](#domain-events)
+    - [Integration Events](#integration-events)
 
 ## Getting Started
 
