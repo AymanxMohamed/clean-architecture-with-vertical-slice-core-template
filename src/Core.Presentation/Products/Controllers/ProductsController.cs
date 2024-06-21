@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Core.Presentation.Products.Controllers;
 
+/// <summary>
+/// This Controller is for testing purposes only.
+/// </summary>
 public class ProductsController(ISender sender, IMapper mapper, ICachingService cachingService) 
     : ApiController(sender, mapper)
 {

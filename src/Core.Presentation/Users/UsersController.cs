@@ -1,6 +1,5 @@
 ﻿using Core.Application.Authentication.Specifications;
 using Core.Application.Common.Persistence;
-using Core.Application.Common.Services;
 using Core.Domain.Aggregates.UserAggregate;
 using Core.Domain.Aggregates.UserAggregate.ValueObjects;
 using Core.Presentation.Common.Controllers;
@@ -11,10 +10,11 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Newtonsoft.Json;
-
 namespace Core.Presentation.Users;
 
+/// <summary>
+/// This Controller is for testing purposes only.
+/// </summary>
 public class UsersController(ISender sender, IMapper mapper, 
     IGenericRepository<User, UserId> cachedGenericRepository,
     IGenericRepository<User, UserId> genericRepository) : 
