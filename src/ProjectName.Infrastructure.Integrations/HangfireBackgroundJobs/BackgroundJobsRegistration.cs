@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
-
-namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.BackgroundJobsRegistration;
+namespace ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
 
 public static class BackgroundJobsRegistration
 {
@@ -11,7 +9,7 @@ public static class BackgroundJobsRegistration
     {
         var serviceProvider = app.ApplicationServices;
         serviceProvider.GetRequiredService<PublishIntegrationEventsRecurringJob>().Run();
-        serviceProvider.GetRequiredService<ConsumeIntegrationEventsRecurringJob>().Run();
+        serviceProvider.GetRequiredService<ConsumeIntegrationEventsFireAndForGetJob>().Run();
         return app;
     }
 }

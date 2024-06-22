@@ -3,9 +3,10 @@ using Hangfire;
 using ProjectName.Application.Common.Services.BackgroundJobs;
 using ProjectName.Infrastructure.Integrations.Common.Constants;
 
-namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
+namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.Abstractions;
 
-public abstract class RecurringBackgroundJobBase(ICronExpressionGenerator cronExpressionGenerator) : BackgroundJobBase
+public abstract class RecurringFireAndForgetJobBase(ICronExpressionGenerator cronExpressionGenerator) 
+    : FireAndForgetJobBase
 {
     protected readonly ICronExpressionGenerator _cronExpressionGenerator = cronExpressionGenerator;
 

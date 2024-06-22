@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.Abstractions;
 using ProjectName.Infrastructure.Persistence.Common.Settings;
 
 using RabbitMQ.Client;
@@ -16,17 +17,17 @@ using Throw;
 
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
+namespace ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
 
-public class ConsumeIntegrationEventsRecurringJob : BackgroundJobBase
+public class ConsumeIntegrationEventsFireAndForGetJob : FireAndForgetJobBase
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
-    private readonly ILogger<ConsumeIntegrationEventsRecurringJob> _logger;
+    private readonly ILogger<ConsumeIntegrationEventsFireAndForGetJob> _logger;
     private readonly CancellationTokenSource _cancellationTokenSource;
     private readonly IModel _channel;
 
-    public ConsumeIntegrationEventsRecurringJob(
-        ILogger<ConsumeIntegrationEventsRecurringJob> logger,
+    public ConsumeIntegrationEventsFireAndForGetJob(
+        ILogger<ConsumeIntegrationEventsFireAndForGetJob> logger,
         IServiceScopeFactory serviceScopeFactory,
         MessageBrokerSettings messageBrokerSettings) 
     {

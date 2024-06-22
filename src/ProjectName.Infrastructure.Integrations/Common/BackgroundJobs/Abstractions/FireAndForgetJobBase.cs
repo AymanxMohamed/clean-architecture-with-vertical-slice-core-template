@@ -1,12 +1,11 @@
 using Hangfire;
 
-using ProjectName.Application.Common.Services;
 using ProjectName.Application.Common.Services.BackgroundJobs;
 using ProjectName.Infrastructure.Integrations.Common.Constants;
 
-namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
+namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.Abstractions;
 
-public abstract class BackgroundJobBase : IBackgroundJob
+public abstract class FireAndForgetJobBase : IBackgroundJob
 {
     public virtual string GetQueueName() => HangfireConstants.Queues.DefaultQueue;
 

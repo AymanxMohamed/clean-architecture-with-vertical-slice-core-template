@@ -27,6 +27,9 @@
     - [Messaging](#messaging)
         - [Domain Events](#domain-events)
         - [Integration Events](#integration-events)
+    - [Hangfire Background Jobs](#hangfire-background-jobs)
+      - [Creating The Background Jobs](#creating-the-background-jobs)
+      - [Running the Background Jobs](#running-the-background-jobs)
 
 ## Getting Started
 
@@ -302,3 +305,68 @@ public class UserCreatedIntegrationEventHandler(ILogger<UserCreatedIntegrationEv
     }
 }
 ```
+
+
+### Hangfire Background Jobs
+
+Application Supports Background Jobs using Hangfire and following the steps to register new background job
+
+#### Creating the Background Jobs
+
+
+- **Fire and forget Job**: inside the Infrastructure.Integrations.HangfireBackgroundJobs namespace 
+define new object that inherits from the FireAndForgetJobBase class and implement the Execute Async Method
+
+```csharp
+namespace ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
+
+public class ConsumeIntegrationEventsFireAndForGetJob : FireAndForgetJobBase
+{
+    public override Task ExecuteAsync()
+    {
+        return Task.CompletedTask;
+    }
+}
+```
+
+- **Recurring Job**: inside the Infrastructure.Integrations.HangfireBackgroundJobs namespace
+define new object that inherits from RecurringFireAndForgetJobBase base class and implement the Execute Async method
+you have to also implement the GetJobId() method
+you can override the default CronExpression by overloading the GetCronExpression method
+
+```csharp
+namespace ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
+
+public class PublishIntegrationEventsRecurringJob(ICronExpressionGenerator cronExpressionGenerator) 
+    : RecurringFireAndForgetJobBase(cronExpressionGenerator)
+{
+    public override string GetJobId() => JobId;
+    
+    public override string GetCronExpression() => _cronExpressionGenerator.SecondsInterval(5);
+
+    public override Task ExecuteAsync()
+    {
+        return Task.CompletedTask;
+    }
+}
+```
+
+#### Running the background Jobs
+
+Inside the ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs namespace 
+
+you will have to execute the Run method on the background job in the BackgroundJobsRegistration class
+
+```csharp
+    public static IApplicationBuilder AddHangfireBackgroundJobs(this IApplicationBuilder app)
+    {
+        var serviceProvider = app.ApplicationServices;
+        serviceProvider.GetRequiredService<PublishIntegrationEventsRecurringJob>().Run();
+        serviceProvider.GetRequiredService<ConsumeIntegrationEventsFireAndForGetJob>().Run();
+        // add you new jobs her
+        return app;
+    }
+```
+
+
+

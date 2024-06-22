@@ -12,9 +12,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ProjectName.Application.Common.Services.BackgroundJobs;
 using ProjectName.Infrastructure.Common.Services.Caching;
 using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.CronExpressions;
-using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
 using ProjectName.Infrastructure.Integrations.Common.BackgroundService;
 using ProjectName.Infrastructure.Integrations.Common.Constants;
+using ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
 using ProjectName.Infrastructure.Persistence.Common.Configurations;
 
 using RabbitMQ.Client;
@@ -57,7 +57,7 @@ public static class DependencyInjection
         services.AddSingleton<IIntegrationEventsPublisher, IntegrationEventsPublisher>();
         services.AddSingleton<ICronExpressionGenerator, CronExpressionGenerator>();
         services.AddSingleton<PublishIntegrationEventsRecurringJob>();
-        services.AddSingleton<ConsumeIntegrationEventsRecurringJob>();
+        services.AddSingleton<ConsumeIntegrationEventsFireAndForGetJob>();
     }
 
     private static IServiceCollection AddHangfireSupport(this IServiceCollection services, IConfiguration configuration)

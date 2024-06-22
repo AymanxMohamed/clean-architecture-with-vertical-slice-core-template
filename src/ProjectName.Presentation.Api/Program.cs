@@ -1,4 +1,4 @@
-using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.BackgroundJobsRegistration;
+using ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
 using ProjectName.Presentation.Api;
 
 var builder = WebApplication.CreateBuilder(args);

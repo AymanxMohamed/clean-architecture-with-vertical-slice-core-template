@@ -3,8 +3,8 @@ using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using ProjectName.Application.Common.Services;
 using ProjectName.Application.Common.Services.BackgroundJobs;
+using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.Abstractions;
 using ProjectName.Infrastructure.Integrations.Common.Constants;
 using ProjectName.Infrastructure.Integrations.Common.IntegrationEventsPublisher;
 using ProjectName.Infrastructure.Persistence;
@@ -13,13 +13,13 @@ using SharedKernel.IntegrationEvents;
 
 using Throw;
 
-namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
+namespace ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
 
 public class PublishIntegrationEventsRecurringJob(
     IIntegrationEventsPublisher integrationEventPublisher,
     IServiceScopeFactory serviceScopeFactory,
     ILogger<PublishIntegrationEventsRecurringJob> logger,
-    ICronExpressionGenerator cronExpressionGenerator) : RecurringBackgroundJobBase(cronExpressionGenerator)
+    ICronExpressionGenerator cronExpressionGenerator) : RecurringFireAndForgetJobBase(cronExpressionGenerator)
 {
     private const string JobId = "publish-integration-events-job";
     
