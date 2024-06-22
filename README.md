@@ -39,7 +39,7 @@
 - Create a new project with the template
 
 ```sh
-dotnet new core-template -o ProjectName
+dotnet new core-template -o Petsouky
 ```
 
 ## Overview
@@ -110,7 +110,7 @@ presentation/
 ### Application Layer
 
 - **CQRS with Mediator Pattern**: Commands and queries are separated using the CQRS pattern and mediated through a mediator pattern.
-- **Cloned Validation**: Validation is performed using the cloned validation package.
+- **Fluent Validation**: Validation is performed using the Fluent validation package.
 - **Unit of Work and Generic Repository**: Implements a unit of work with a generic repository for data access.
 - **Specification Pattern**: Specifications are used to encapsulate query logic.
 
