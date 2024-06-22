@@ -36,7 +36,7 @@ public static class DependencyInjection
         
         var databaseConfigurations = new DatabaseConfigurations();
         
-        configuration.GetSection(DatabaseConfigurations.SectionName).Bind(databaseConfigurations);
+        configuration.GetSection(DatabaseConfigurations.ApplicationSectionName).Bind(databaseConfigurations);
 
         services.AddDbContext<ApplicationDbContext>(builder =>
         {

@@ -28,6 +28,20 @@ services:
     networks:
       - sampleproject-network
 
+  hangfire-postgres-db:
+    image: postgres:latest
+    container_name: hangfire-postgres-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Ayman123@
+      - POSTGRES_DB=test_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - sampleproject-network
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin

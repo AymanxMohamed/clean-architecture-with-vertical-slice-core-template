@@ -8,7 +8,8 @@ namespace ProjectName.Infrastructure.Persistence.Common.Settings;
 
 public class DatabaseConfigurations
 {
-    public const string SectionName = "DatabaseConfigurations";
+    public const string ApplicationSectionName = "ApplicationDatabaseConfigurations";
+    public const string HangfireSectionName = "HangfireDatabaseConfigurations";
 
     public bool SqlServerEnabled { get; init; }
    
