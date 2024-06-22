@@ -4,22 +4,15 @@ namespace ProjectName.Infrastructure.Integrations.Common.Constants;
 
 public static class HangfireConstants
 {
+    public const int DefaultRecurringJobsMinutesInterval = 3;
+    
     public static readonly List<BackgroundJobServerOptions> SupportedServers = [
         new BackgroundJobServerOptions
         {
-            ServerName = "Default",
-            Queues = [Queues.DefaultQueue]
-        },
-        new BackgroundJobServerOptions
-        {
-            ServerName = "PublishIntegrationEventsServer",
-            Queues = [Queues.PublishingIntegrationEventsQueue]
-        },
-        new BackgroundJobServerOptions
-        {
-            ServerName = "ConsumeIntegrationEventsServer",
-            Queues = [Queues.ConsumingIntegrationEventsQueue]
-        },
+            ServerName = "MainServer",
+            Queues = Queues.AllQueues
+        }
+
     ];
 
     public static class Queues

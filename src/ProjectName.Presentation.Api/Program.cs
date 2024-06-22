@@ -1,6 +1,4 @@
-using Hangfire;
-
-using ProjectName.Infrastructure.Integrations;
+using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.BackgroundJobsRegistration;
 using ProjectName.Presentation.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,11 +11,5 @@ WebApplication app = builder.Build();
 app.UseProjectNameMiddlewarePipeLine();
 
 app.AddHangfireBackgroundJobs();
-
-RecurringJob.AddOrUpdate(
-    recurringJobId: "my-test-job-id",
-    queue: "my-test-queue",
-    methodCall: () => Console.WriteLine("Hello from recurring job"),
-    cronExpression: "*/5 * * * *");
 
 app.Run();

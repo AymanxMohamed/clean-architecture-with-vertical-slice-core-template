@@ -1,30 +1,35 @@
 using System.Text.Json;
 
-using ProjectName.Infrastructure.Integrations.Common.IntegrationEventsPublisher;
-using ProjectName.Infrastructure.Persistence;
-
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using Newtonsoft.Json;
+using ProjectName.Application.Common.Services;
+using ProjectName.Application.Common.Services.BackgroundJobs;
+using ProjectName.Infrastructure.Integrations.Common.Constants;
+using ProjectName.Infrastructure.Integrations.Common.IntegrationEventsPublisher;
+using ProjectName.Infrastructure.Persistence;
 
 using SharedKernel.IntegrationEvents;
 
 using Throw;
 
-using JsonSerializer = System.Text.Json.JsonSerializer;
+namespace ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
 
-namespace ProjectName.Infrastructure.Integrations.Common.BackgroundService;
-
-public class HangfirePublishIntegrationEventsBackgroundService(
+public class PublishIntegrationEventsRecurringJob(
     IIntegrationEventsPublisher integrationEventPublisher,
     IServiceScopeFactory serviceScopeFactory,
-    ILogger<HangfirePublishIntegrationEventsBackgroundService> logger)
+    ILogger<PublishIntegrationEventsRecurringJob> logger,
+    ICronExpressionGenerator cronExpressionGenerator) : RecurringBackgroundJobBase(cronExpressionGenerator)
 {
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private const string JobId = "publish-integration-events-job";
     
-    public async Task PublishIntegrationEventsFromDbAsync()
+    public override string GetQueueName() => HangfireConstants.Queues.PublishingIntegrationEventsQueue;
+
+    public override string GetJobId() => JobId;
+
+    public override string GetCronExpression() => _cronExpressionGenerator.SecondsInterval(5);
+
+    public override async Task ExecuteAsync()
     {
         using var scope = serviceScopeFactory.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

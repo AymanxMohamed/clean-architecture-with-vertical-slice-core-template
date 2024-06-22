@@ -1,9 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.PostgreSql;
 
-using Microsoft.AspNetCore.Builder;
-
-using ProjectName.Infrastructure.Integrations.Common.BackgroundService;
 using ProjectName.Infrastructure.Integrations.Common.IntegrationEventsPublisher;
 using ProjectName.Infrastructure.Integrations.Common.OutboxWriters;
 using ProjectName.Infrastructure.Persistence.Common.Settings;
@@ -12,7 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
+using ProjectName.Application.Common.Services.BackgroundJobs;
 using ProjectName.Infrastructure.Common.Services.Caching;
+using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.CronExpressions;
+using ProjectName.Infrastructure.Integrations.Common.BackgroundJobs.RecurringJobs;
+using ProjectName.Infrastructure.Integrations.Common.BackgroundService;
 using ProjectName.Infrastructure.Integrations.Common.Constants;
 using ProjectName.Infrastructure.Persistence.Common.Configurations;
 
@@ -22,26 +23,6 @@ namespace ProjectName.Infrastructure.Integrations;
 
 public static class DependencyInjection
 {
-    public static void AddHangfireBackgroundJobs(this IApplicationBuilder app)
-    {
-        const string cronExpression = "*/5 * * * *";
-        
-        var serviceProvider = app.ApplicationServices;
-
-        using var scope = serviceProvider.CreateScope();
-        var scopeServiceProvider = scope.ServiceProvider;
-
-        var service = scopeServiceProvider.GetRequiredService<HangfirePublishIntegrationEventsBackgroundService>();
-        
-        const string jobId = "publishEventsJobId";
-        
-        RecurringJob.AddOrUpdate(
-            recurringJobId: jobId,
-            methodCall: () => service.PublishIntegrationEventsFromDbAsync(),
-            cronExpression: cronExpression, 
-            queue: "integration-events-background-services");
-    }
-    
     public static IServiceCollection AddProjectNameInfrastructureIntegrations(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -59,18 +40,24 @@ public static class DependencyInjection
                                         .Get<MessageBrokerSettings>() ?? new MessageBrokerSettings();
 
         services.AddSingleton(messageBrokerSettings);
-        services.AddBackgroundServices();
+        services.AddHangfireBackgroundJobs();
         services.AddScoped<IOutboxWriter, OutboxWriter>();
         return services;
     }
     
-    private static void AddBackgroundServices(this IServiceCollection services)
+    private static void AddBackgroundHostedServices(this IServiceCollection services)
     {
         services.AddSingleton<IIntegrationEventsPublisher, IntegrationEventsPublisher>();
-        services.AddScoped<HangfirePublishIntegrationEventsBackgroundService>();
-        
-        // services.AddHostedService<PublishIntegrationEventsBackgroundService>();
+        services.AddHostedService<PublishIntegrationEventsBackgroundService>();
         services.AddHostedService<ConsumeIntegrationEventsBackgroundService>();
+    }
+
+    private static void AddHangfireBackgroundJobs(this IServiceCollection services)
+    {
+        services.AddSingleton<IIntegrationEventsPublisher, IntegrationEventsPublisher>();
+        services.AddSingleton<ICronExpressionGenerator, CronExpressionGenerator>();
+        services.AddSingleton<PublishIntegrationEventsRecurringJob>();
+        services.AddSingleton<ConsumeIntegrationEventsRecurringJob>();
     }
 
     private static IServiceCollection AddHangfireSupport(this IServiceCollection services, IConfiguration configuration)
