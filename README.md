@@ -331,8 +331,11 @@ public class ConsumeIntegrationEventsFireAndForGetJob : FireAndForgetJobBase
 
 - **Recurring Job**: inside the Infrastructure.Integrations.HangfireBackgroundJobs namespace
 define new object that inherits from RecurringFireAndForgetJobBase base class and implement the Execute Async method
-you have to also implement the GetJobId() method
-you can override the default CronExpression by overloading the GetCronExpression method
+- you have to also implement the GetJobId() method
+- you can override the default CronExpression by overloading the GetCronExpression method
+- you can also override the default queue by override the GetQueueName method but you will have to add the queue 
+in the HangfireConstants.Queues.AllQueues array
+
 
 ```csharp
 namespace ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
@@ -340,6 +343,8 @@ namespace ProjectName.Infrastructure.Integrations.HangfireBackgroundJobs;
 public class PublishIntegrationEventsRecurringJob(ICronExpressionGenerator cronExpressionGenerator) 
     : RecurringFireAndForgetJobBase(cronExpressionGenerator)
 {
+    public override string GetQueueName() => HangfireConstants.Queues.PublishingIntegrationEventsQueue;
+    
     public override string GetJobId() => JobId;
     
     public override string GetCronExpression() => _cronExpressionGenerator.SecondsInterval(5);
