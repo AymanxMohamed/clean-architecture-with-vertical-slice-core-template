@@ -1,9 +1,9 @@
-﻿using ProjectName.Presentation.Common.Constants.Endpoints;
-
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+using ProjectName.Infrastructure.Persistence.Common.Constants.Endpoints;
 
 namespace ProjectName.Presentation.Common.Controllers;
 
@@ -11,7 +11,7 @@ namespace ProjectName.Presentation.Common.Controllers;
 [ApiController]
 public class ApiErrorsController(ILogger<ApiErrorsController> logger) : ControllerBase
 {
-    [Route(template: ProjectNameEndpoints.GlobalErrorHandlingEndPoint)]
+    [Route(template: CoreEndpoints.GlobalErrorHandlingEndPoint)]
     [HttpGet]
     public IActionResult Error()
     {

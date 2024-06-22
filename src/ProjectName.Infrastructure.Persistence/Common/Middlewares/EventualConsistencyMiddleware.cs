@@ -1,10 +1,11 @@
 ﻿using ProjectName.Domain.Common.EventualConsistency;
 using ProjectName.Domain.Common.Interfaces;
-using ProjectName.Presentation.Common.Constants.Endpoints;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
+
+using ProjectName.Infrastructure.Persistence.Common.Constants.Endpoints;
 
 namespace ProjectName.Infrastructure.Persistence.Common.Middlewares;
 
@@ -14,7 +15,7 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
 
     public async Task InvokeAsync(HttpContext context, IPublisher publisher, ApplicationDbContext dbContext)
     {
-        if (context.Request.Path.Equals(other: ProjectNameEndpoints.HealthCheckEndpoint, StringComparison.OrdinalIgnoreCase))
+        if (context.Request.Path.Equals(other: CoreEndpoints.HealthCheckEndpoint, StringComparison.OrdinalIgnoreCase))
         {
             await next(context);
             return;

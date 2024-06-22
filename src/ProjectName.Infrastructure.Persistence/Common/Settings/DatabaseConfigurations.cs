@@ -9,6 +9,7 @@ namespace ProjectName.Infrastructure.Persistence.Common.Settings;
 public class DatabaseConfigurations
 {
     public const string ApplicationSectionName = "ApplicationDatabaseConfigurations";
+    
     public const string HangfireSectionName = "HangfireDatabaseConfigurations";
 
     public bool SqlServerEnabled { get; init; }
@@ -52,4 +53,7 @@ public class DatabaseConfigurations
         Timeout = ConnectionTimeout,
         SslMode = Encrypt ? SslMode.Require : SslMode.Disable
     }.ConnectionString;
+
+    public static string MissingSectionMessage(string sectionName) =>
+        $"Configurations Section {sectionName} is missing in the appsettings.json file";
 }

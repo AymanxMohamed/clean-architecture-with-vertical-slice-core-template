@@ -138,6 +138,7 @@ services:
       - core.elastic.search
       - core.redis
       - rabbitmq
+      - hangfire-postgres-db
     networks:
       - sampleproject-network
 

@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="ErrorOr" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.json" Version="13.0.3" />
+    <PackageReference Include="Throw" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>
